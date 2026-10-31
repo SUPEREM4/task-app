@@ -19,6 +19,7 @@ jobs:
       - run: |
           npx cap add android
           npx cap sync android
+          npx @capacitor/assets generate --android
       - run: |
           F=android/app/src/main/AndroidManifest.xml
           A='android.permission'
