@@ -298,6 +298,7 @@ linear-gradient(180deg,#0b0d12,#06070a);box-shadow:0 0 0 1px rgba(201,168,92,.22
       <div class="lg-div"><span></span><b>◆</b><span></span></div>
       <input id="lgName" maxlength="24" placeholder="Your royal name" autocomplete="off">
       <button type="button" id="lgGo">CLAIM YOUR THRONE</button>
+      <button type="button" id="lgG" style="margin-top:10px">CONTINUE WITH GOOGLE</button>
       <div class="lg-s">Once spoken, it is written forever</div>
     </div>
     <div class="lg-card" id="lgDone" style="display:none">
@@ -382,7 +383,12 @@ TABS.forEach(([name,icon],i)=>{
       <label class="rem-r"><span>Reminders on</span><input type="checkbox" id="remOn"></label>
       <label class="rem-r"><span>Morning call</span><input type="time" id="remAm"></label>
       <label class="rem-r"><span>Evening check</span><input type="time" id="remPm"></label>
-      <div class="rem-s" id="remStat"></div></div></div>
+      <div class="rem-s" id="remStat"></div></div>
+     <div class="rem"><div class="rem-t">Backup &amp; Restore</div>
+      <div class="t-act"><button type="button" id="bkUp">BACKUP</button><button type="button" id="bkRes">RESTORE</button></div>
+      <input type="file" id="bkFile" accept=".json,application/json" style="display:none">
+      <div class="rem-s" id="gInfo"></div>
+      <div class="rem-s">Take a backup before every update. Save the file in Drive or WhatsApp.</div></div></div>
     <div class="foot-msg gold-text" id="footMsg"></div>`:
   `<div class="royal-card plain"><h2><span class="card-icon">${ic(icon)}</span>${name}</h2><div class="empty">${ic(icon)}Nothing here yet. Coming soon.</div></div>`;
   scroll.appendChild(p);
@@ -742,6 +748,23 @@ function remChange(){rem={on:remEl('remOn').checked,am:remEl('remAm').value||'08
 remEl('remOn').checked=!!rem.on;remEl('remAm').value=rem.am;remEl('remPm').value=rem.pm;
 ['remOn','remAm','remPm'].forEach(id=>remEl(id).addEventListener('change',remChange));
 if(!NATIVE)remStatus('Reminders work in the installed Android app.');
+const GK='supreme_google_v1';
+async function gSignIn(){
+ try{const r=await PL.FirebaseAuthentication.signInWithGoogle(),u=(r&&r.user)||{};
+  try{localStorage.setItem(GK,JSON.stringify({n:u.displayName||'',e:u.email||'',p:u.photoUrl||''}))}catch(x){}
+  tmpName=String(u.displayName||u.email||'King').split(' ')[0].slice(0,24);
+  remEl('lgNm').textContent=tmpName;remEl('lgAsk').style.display='none';remEl('lgDone').style.display='block';gShow()
+ }catch(e){const m=String((e&&e.message)||e);if(!/cancel/i.test(m))info('Google sign-in failed',m)}}
+function gShow(){try{const g=JSON.parse(localStorage.getItem(GK)||'null');remEl('gInfo').textContent=g&&g.e?'Signed in with Google: '+g.e:''}catch(x){}}
+remEl('lgG').onclick=gSignIn;if(!NATIVE)remEl('lgG').style.display='none';gShow();
+remEl('bkUp').onclick=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.indexOf('supreme_')===0&&k!=='supreme_fonts_v2')o[k]=localStorage.getItem(k)}}catch(e){}
+ dl('supreme-backup-'+ymd(new Date())+'.json',new Blob([JSON.stringify({app:'supreme',v:1,data:o})],{type:'application/json'}))};
+remEl('bkRes').onclick=()=>remEl('bkFile').click();
+remEl('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||j.app!=='supreme'||!j.data)throw 0;
+  if(!confirm('Restore this backup? Current data will be replaced.'))return;
+  Object.keys(j.data).forEach(k=>{if(k.indexOf('supreme_')===0&&k!=='supreme_fonts_v2')localStorage.setItem(k,j.data[k])});location.reload()}
+  catch(x){info('Restore failed','This is not a valid Supreme backup file')}};r.readAsText(f);e.target.value=''};
 /* ===== RULEBOOK ===== */
 const RK='supreme_rules_v1';let rules=[],rbP=0;
 try{rules=JSON.parse(localStorage.getItem(RK)||'[]')||[]}catch(e){rules=[]}

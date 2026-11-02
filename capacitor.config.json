@@ -1,5 +1,14 @@
 {
   "appId": "com.mytaskapp.tracker",
   "appName": "Supreme",
-  "webDir": "www"
+  "webDir": "www",
+  "plugins": {
+    "LocalNotifications": {
+      "iconColor": "#C9A85C"
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": false,
+      "providers": ["google.com"]
+    }
+  }
 }

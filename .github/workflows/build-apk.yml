@@ -20,12 +20,36 @@ jobs:
           npx cap add android
           npx cap sync android
           npx @capacitor/assets generate --android
+      - name: Firebase and Google sign-in
+        run: |
+          if [ -f firebase/google-services.json ]; then
+            cp firebase/google-services.json android/app/google-services.json
+          fi
+          sed -i 's|^ext {|ext {\n    rgcfaIncludeGoogle = true\n    androidxCredentialsVersion = "1.3.0"|' android/variables.gradle
       - run: |
           F=android/app/src/main/AndroidManifest.xml
           A='android.permission'
           P1="<uses-permission android:name=\"$A.POST_NOTIFICATIONS\"/>"
           P2="<uses-permission android:name=\"$A.SCHEDULE_EXACT_ALARM\"/>"
-          sed -i "s#</manifest>#$P1$P2</manifest>#" $F
+          P3="<uses-permission android:name=\"$A.USE_EXACT_ALARM\"/>"
+          sed -i "s#</manifest>#$P1$P2$P3</manifest>#" $F
+          D=android/app/src/main/res/drawable
+          mkdir -p $D
+          cp notif/ic_stat_supreme.png $D/ic_stat_supreme.png
+      - name: Fixed signing key
+        env:
+          KS: ${{ secrets.KEYSTORE_B64 }}
+          PW: ${{ secrets.KEY_PASS }}
+        run: |
+          if [ -n "$KS" ]; then
+            echo "$KS" | base64 -d > android/supreme.p12
+            cat >> android/app/build.gradle << GRADLE_EOF
+          android {
+            signingConfigs { supreme { storeFile file("../supreme.p12"); storePassword "$PW"; keyAlias "supreme"; keyPassword "$PW"; storeType "pkcs12" } }
+            buildTypes { debug { signingConfig signingConfigs.supreme } }
+          }
+          GRADLE_EOF
+          fi
       - working-directory: android
         run: |
           chmod +x gradlew

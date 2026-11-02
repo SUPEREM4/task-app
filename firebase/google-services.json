@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "200245511967",
+    "project_id": "supreme-12f47",
+    "storage_bucket": "supreme-12f47.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:200245511967:android:70be359b3b9c284f1d522a",
+        "android_client_info": {
+          "package_name": "com.mytaskapp.tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "200245511967-6t8f3m7pldts4dooslkkvroilf80jjsv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mytaskapp.tracker",
+            "certificate_hash": "e639f6e764a674cb8a8d95ab277020cd7315e5f2"
+          }
+        },
+        {
+          "client_id": "200245511967-enl3r1tg7l0prvm6mo71trpig9lgheb0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACoHurxLViNiqyPmhX7oCQfLl9YsXgytY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "200245511967-enl3r1tg7l0prvm6mo71trpig9lgheb0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
