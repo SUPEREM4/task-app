@@ -383,12 +383,8 @@ TABS.forEach(([name,icon],i)=>{
       <label class="rem-r"><span>Reminders on</span><input type="checkbox" id="remOn"></label>
       <label class="rem-r"><span>Morning call</span><input type="time" id="remAm"></label>
       <label class="rem-r"><span>Evening check</span><input type="time" id="remPm"></label>
-      <div class="rem-s" id="remStat"></div></div>
-     <div class="rem"><div class="rem-t">Backup &amp; Restore</div>
-      <div class="t-act"><button type="button" id="bkUp">BACKUP</button><button type="button" id="bkRes">RESTORE</button></div>
-      <input type="file" id="bkFile" accept=".json,application/json" style="display:none">
-      <div class="rem-s" id="gInfo"></div>
-      <div class="rem-s">Take a backup before every update. Save the file in Drive or WhatsApp.</div></div></div>
+      <div class="rem-s" id="remStat"></div><div class="t-act" style="margin-top:8px"><button type="button" id="remTest">TEST NOTIFICATION</button></div></div>
+     <div class="rem"><div class="rem-t">Cloud Save</div><div class="t-act"><button type="button" id="cloudBtn">SIGN IN WITH GOOGLE</button></div><div class="rem-s" id="gInfo"></div><div class="rem-s">Your progress saves automatically to your Google account. Sign in on any phone to get it all back.</div></div></div>
     <div class="foot-msg gold-text" id="footMsg"></div>`:
   `<div class="royal-card plain"><h2><span class="card-icon">${ic(icon)}</span>${name}</h2><div class="empty">${ic(icon)}Nothing here yet. Coming soon.</div></div>`;
   scroll.appendChild(p);
@@ -722,6 +718,7 @@ async function nShare(name,blob,title,text){
 async function nativeOut(name,blob){
  try{if(/^image\//.test(blob.type))await nSaveImg(name,blob);else await nShare(name,blob,name,'Supreme data')}
  catch(e){const m=String((e&&e.message)||e);if(!/cancel/i.test(m))info('Could not complete',m)}}
+const CH={id:'supreme_main',name:'Supreme reminders',description:'Daily mission reminders',importance:4,visibility:1,vibration:true,lights:true};
 const RMK='supreme_rem_v1';let rem={on:true,am:'08:00',pm:'20:00'};
 try{rem=Object.assign(rem,JSON.parse(localStorage.getItem(RMK)||'{}'))}catch(e){}
 const remEl=id=>document.getElementById(id),hm=s=>{const a=(s||'0:0').split(':');return{h:+a[0]||0,m:+a[1]||0}};
@@ -735,36 +732,87 @@ async function remSync(){
   if(!rem.on){remStatus('Reminders are off');return}
   let p=await LN.checkPermissions();
   if(p.display!=='granted'){p=await LN.requestPermissions();if(p.display!=='granted'){remStatus('Allow notifications in Android Settings > Apps > this app');return}}
+  try{await LN.createChannel(CH)}catch(e){}
   const nm=uname||'Your Majesty',a=hm(rem.am),b=hm(rem.pm),now=new Date(),total=tasks.length,left=tasks.filter(t=>!t.done).length,list=[];
-  list.push({id:1001,title:'Good Morning, '+nm,body:'Your tasks are waiting. Rule your day.',schedule:{on:{hour:a.h,minute:a.m},allowWhileIdle:true}});
+  list.push({id:1001,channelId:'supreme_main',title:'Good Morning, '+nm,body:'Your tasks are waiting. Rule your day.',schedule:{on:{hour:a.h,minute:a.m},allowWhileIdle:true}});
   for(let i=0;i<7;i++){
    const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i,b.h,b.m,0);
    if(d<=now)continue;if(i===0&&(!total||!left))continue;
-   list.push({id:2000+i,title:'Evening check, '+nm,body:i===0?left+(left===1?' task is':' tasks are')+' still pending. Finish them before the day ends.':'Did you finish your tasks today? Open the app and check.',schedule:{at:d,allowWhileIdle:true}})}
+   list.push({id:2000+i,channelId:'supreme_main',title:'Evening check, '+nm,body:i===0?left+(left===1?' task is':' tasks are')+' still pending. Finish them before the day ends.':'Did you finish your tasks today? Open the app and check.',schedule:{at:d,allowWhileIdle:true}})}
   await LN.schedule({notifications:list});
-  remStatus('Reminders active: '+rem.am+' and '+rem.pm)
+  let pc='';try{const pd=await LN.getPending();pc=' ('+((pd.notifications||[]).length)+' scheduled)'}catch(e){}
+  remStatus('Reminders active: '+rem.am+' and '+rem.pm+pc)
  }catch(e){remStatus('Reminder error: '+String((e&&e.message)||e))}}
 function remChange(){rem={on:remEl('remOn').checked,am:remEl('remAm').value||'08:00',pm:remEl('remPm').value||'20:00'};try{localStorage.setItem(RMK,JSON.stringify(rem))}catch(x){}remSync()}
 remEl('remOn').checked=!!rem.on;remEl('remAm').value=rem.am;remEl('remPm').value=rem.pm;
 ['remOn','remAm','remPm'].forEach(id=>remEl(id).addEventListener('change',remChange));
 if(!NATIVE)remStatus('Reminders work in the installed Android app.');
-const GK='supreme_google_v1';
+const GK='supreme_google_v1',TSK='supreme_cloud_ts';
+const FB=()=>PL.FirebaseAuthentication,_si=Storage.prototype.setItem;
+const SKIP=k=>k.indexOf('supreme_')!==0||k==='supreme_fonts_v2'||k===GK||k===TSK||k==='supreme_reset_v6';
+const cloud={uid:'',pid:'',ok:false},dirty=new Set();let cTimer=null;
+const emsg=e=>String((e&&e.message)||e);
+async function cTok(){const r=await FB().getIdToken(),t=r&&r.token;if(!t)throw new Error('Not signed in');
+ const p=JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));cloud.uid=p.user_id||p.sub;cloud.pid=p.aud;return t}
+async function cReq(m,path,body){const t=await cTok();
+ const r=await fetch('https://firestore.googleapis.com/v1/projects/'+cloud.pid+'/databases/(default)/documents/users/'+cloud.uid+'/kv'+path,{method:m,headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});
+ if(!r.ok){let x='';try{x=(await r.json()).error.message}catch(q){}throw new Error('Cloud '+r.status+(x?': '+x:''))}
+ return r.json()}
+const dKey=d=>decodeURIComponent(d.name.split('/').pop());
+async function cPull(){const out=[];let pt='';do{const j=await cReq('GET','?pageSize=100'+(pt?'&pageToken='+encodeURIComponent(pt):''));(j.documents||[]).forEach(d=>out.push(d));pt=j.nextPageToken||''}while(pt);return out}
+async function cPut(k){const v=localStorage.getItem(k);if(v===null)return;
+ await cReq('PATCH','/'+encodeURIComponent(k)+'?updateMask.fieldPaths=v&updateMask.fieldPaths=t',{fields:{v:{stringValue:v},t:{integerValue:String(Date.now())}}})}
+async function cPushAll(){const ks=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(!SKIP(k))ks.push(k)}
+ for(const k of ks)await cPut(k);_si.call(localStorage,TSK,String(Date.now()))}
+function cUi(){const b=remEl('cloudBtn'),i=remEl('gInfo');if(!b||!i)return;
+ if(!NATIVE){b.style.display='none';i.textContent='Cloud save works in the installed Android app.';return}
+ let g=null;try{g=JSON.parse(localStorage.getItem(GK)||'null')}catch(x){}
+ if(cloud.ok){b.textContent='SYNC NOW';i.textContent='Auto cloud save is ON'+(g&&g.e?' ('+g.e+')':'')}
+ else{b.textContent='SIGN IN WITH GOOGLE';i.textContent='Not signed in. Progress is saved only on this phone.'}}
+function cQueue(k){if(!cloud.ok||SKIP(k))return;dirty.add(k);clearTimeout(cTimer);cTimer=setTimeout(cFlush,2500)}
+async function cFlush(){if(!cloud.ok||!dirty.size)return;const ks=[...dirty];dirty.clear();
+ try{for(const k of ks)await cPut(k);_si.call(localStorage,TSK,String(Date.now()))}
+ catch(e){ks.forEach(k=>dirty.add(k));clearTimeout(cTimer);cTimer=setTimeout(cFlush,30000)}}
+Storage.prototype.setItem=function(k,v){_si.call(this,k,v);if(this===localStorage)cQueue(String(k))};
+async function cSignIn(){
+ const r=await FB().signInWithGoogle(),u=(r&&r.user)||{};
+ _si.call(localStorage,GK,JSON.stringify({e:u.email||''}));
+ await cTok();const docs=await cPull(),hasLocal=!!localStorage.getItem(NK);
+ if(docs.length){
+  const load=hasLocal?confirm('Saved data found in your Google account.\n\nOK = load it on this phone (replaces current data)\nCancel = keep this phone\'s data and overwrite the cloud'):true;
+  if(load){docs.forEach(d=>{const k=dKey(d),v=d.fields&&d.fields.v&&d.fields.v.stringValue;if(v!=null&&!SKIP(k))_si.call(localStorage,k,v)});_si.call(localStorage,TSK,String(Date.now()));cloud.ok=true;location.reload();return 'loaded'}}
+ cloud.ok=true;await cPushAll();cUi();return 'pushed'}
 async function gSignIn(){
- try{const r=await PL.FirebaseAuthentication.signInWithGoogle(),u=(r&&r.user)||{};
-  try{localStorage.setItem(GK,JSON.stringify({n:u.displayName||'',e:u.email||'',p:u.photoUrl||''}))}catch(x){}
-  tmpName=String(u.displayName||u.email||'King').split(' ')[0].slice(0,24);
-  remEl('lgNm').textContent=tmpName;remEl('lgAsk').style.display='none';remEl('lgDone').style.display='block';gShow()
- }catch(e){const m=String((e&&e.message)||e);if(!/cancel/i.test(m))info('Google sign-in failed',m)}}
-function gShow(){try{const g=JSON.parse(localStorage.getItem(GK)||'null');remEl('gInfo').textContent=g&&g.e?'Signed in with Google: '+g.e:''}catch(x){}}
-remEl('lgG').onclick=gSignIn;if(!NATIVE)remEl('lgG').style.display='none';gShow();
-remEl('bkUp').onclick=()=>{const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.indexOf('supreme_')===0&&k!=='supreme_fonts_v2')o[k]=localStorage.getItem(k)}}catch(e){}
- dl('supreme-backup-'+ymd(new Date())+'.json',new Blob([JSON.stringify({app:'supreme',v:1,data:o})],{type:'application/json'}))};
-remEl('bkRes').onclick=()=>remEl('bkFile').click();
-remEl('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
- r.onload=()=>{try{const j=JSON.parse(r.result);if(!j||j.app!=='supreme'||!j.data)throw 0;
-  if(!confirm('Restore this backup? Current data will be replaced.'))return;
-  Object.keys(j.data).forEach(k=>{if(k.indexOf('supreme_')===0&&k!=='supreme_fonts_v2')localStorage.setItem(k,j.data[k])});location.reload()}
-  catch(x){info('Restore failed','This is not a valid Supreme backup file')}};r.readAsText(f);e.target.value=''};
+ try{const res=await cSignIn();if(res==='loaded')return;
+  remEl('lgG').style.display='none';
+  const n=remEl('lgName');n.value='';n.focus();
+  const s=remEl('lgAsk').querySelector('.lg-s');if(s)s.textContent='Signed in with Google. Now type your own royal name.'
+ }catch(e){const m=emsg(e);if(!/cancel/i.test(m))info('Google sign-in failed',m)}}
+async function cAuto(){
+ if(!NATIVE||!FB()){cUi();return}
+ try{const r=await FB().getCurrentUser();if(!r||!r.user){cUi();return}
+  await cTok();const docs=await cPull(),last=+(localStorage.getItem(TSK)||0);let ch=0;
+  docs.forEach(d=>{const k=dKey(d),f=d.fields||{},v=f.v&&f.v.stringValue,t=+((f.t&&f.t.integerValue)||0);
+   if(v!=null&&!SKIP(k)&&t>last&&localStorage.getItem(k)!==v){_si.call(localStorage,k,v);ch++}});
+  cloud.ok=true;
+  if(ch){_si.call(localStorage,TSK,String(Date.now()));location.reload();return}
+  await cPushAll();cUi()
+ }catch(e){cUi();const i=remEl('gInfo');if(i)i.textContent='Cloud sync error: '+emsg(e)}}
+remEl('lgG').onclick=gSignIn;if(!NATIVE)remEl('lgG').style.display='none';
+remEl('cloudBtn').onclick=async()=>{
+ try{if(cloud.ok){await cPushAll();info('Cloud save','Synced just now')}else{await cSignIn()}}
+ catch(e){const m=emsg(e);if(!/cancel/i.test(m))info('Cloud save failed',m)}};
+remEl('remTest').onclick=async()=>{
+ if(!NATIVE||!PL.LocalNotifications){info('Test notification','Works only in the installed Android app');return}
+ const LN=PL.LocalNotifications;
+ try{let p=await LN.checkPermissions();if(p.display!=='granted')p=await LN.requestPermissions();
+  if(p.display!=='granted'){info('Notifications blocked','Allow notifications: Android Settings > Apps > Supreme > Notifications');return}
+  try{await LN.createChannel(CH)}catch(e){}
+  await LN.schedule({notifications:[{id:9001,channelId:'supreme_main',title:'Test, '+(uname||'Your Majesty'),body:'Notifications are working.',schedule:{at:new Date(Date.now()+5000),allowWhileIdle:true}}]});
+  info('Test scheduled','You will get a notification in 5 seconds. Leave the app or lock the screen.')
+ }catch(e){info('Test failed',emsg(e))}};
+document.addEventListener('visibilitychange',()=>{if(document.hidden)cFlush();else{try{remSync()}catch(e){}}});
+cUi();cAuto();
 /* ===== RULEBOOK ===== */
 const RK='supreme_rules_v1';let rules=[],rbP=0;
 try{rules=JSON.parse(localStorage.getItem(RK)||'[]')||[]}catch(e){rules=[]}
