@@ -16,6 +16,14 @@ jobs:
           distribution: temurin
           java-version: 21
       - run: npm install
+      - name: Make sharp icons
+        run: |
+          python3 -m pip install --break-system-packages pillow numpy scipy
+          python3 make_assets.py
+      - name: Firebase project id
+        run: |
+          PID=$(jq -r .project_info.project_id firebase/google-services.json)
+          sed -i "s/__FIREBASE_PROJECT__/$PID/g" www/index.html
       - run: |
           npx cap add android
           npx cap sync android
@@ -36,6 +44,10 @@ jobs:
           D=android/app/src/main/res/drawable
           mkdir -p $D
           cp notif/ic_stat_supreme.png $D/ic_stat_supreme.png
+          cp notif/ic_large_supreme.png $D/ic_large_supreme.png
+          cp notif/splash_icon.png $D/splash_icon.png
+          S=android/app/src/main/res/values/styles.xml
+          sed -i '/AppTheme.NoActionBarLaunch/a\        <item name="windowSplashScreenBackground">#000000</item>\n        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>' $S
       - name: Fixed signing key
         env:
           KS: ${{ secrets.KEYSTORE_B64 }}
