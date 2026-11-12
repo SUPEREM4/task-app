@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -70,3 +72,11 @@ jobs:
         with:
           name: supreme-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Publish download link
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk Supreme.apk
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest Supreme.apk --title "Supreme (latest)" --notes "Latest build" --target ${{ github.sha }}
