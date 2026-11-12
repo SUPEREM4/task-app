@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
 <title>Supreme · Royal Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
@@ -287,6 +287,8 @@ linear-gradient(180deg,#0b0d12,#06070a);box-shadow:0 0 0 1px rgba(201,168,92,.22
 .cal-g button.blank{visibility:hidden}
 .cal-note{margin-top:12px;text-align:center;font-style:italic;color:#b89a5a;font-size:.95rem}
 .cal-x{display:block;margin:12px auto 0;background:linear-gradient(180deg,#f0d684,#b88a2a);border:0;border-radius:14px;padding:11px 22px;font-family:'Cinzel',serif;letter-spacing:.18em;font-size:.7rem;color:#2a1b06;font-weight:700;cursor:pointer}
+html,body{touch-action:pan-x pan-y}
+.dy-em.lock button{opacity:.5;pointer-events:none}.dy-em.lock button.on{opacity:1}
 </style>
 </head>
 <body>
@@ -413,7 +415,7 @@ const DIARY_HTML=`<div class="dy">
   <div class="dy-bar"><button type="button" id="dyClose" aria-label="Cover">${ic('diary')}</button>
    <div class="dy-date"><button type="button" id="dyPrev" aria-label="Previous day">\u2039</button><span id="dyTitle"></span><button type="button" id="dyNext" aria-label="Next day">\u203a</button></div>
    <button type="button" id="dyCalBtn" aria-label="Mood calendar">${ic('cal')}</button></div>
-  <div class="dy-mood"><div class="dy-q">How was your day?</div><div class="dy-em" id="dyEm"></div></div>
+  <div class="dy-mood"><div class="dy-q" id="dyQ">How was your day?</div><div class="dy-em" id="dyEm"></div></div>
   <div class="dy-pages" id="dyPages"></div>
  </div>
  <div class="dy-cal" id="dyCal" style="display:none">
@@ -443,6 +445,7 @@ TABS.forEach(([name,icon],i)=>{
       <label class="rem-r"><span>Reminders on</span><input type="checkbox" id="remOn"></label>
       <label class="rem-r"><span>Morning call</span><input type="time" id="remAm"></label>
       <label class="rem-r"><span>Evening check</span><input type="time" id="remPm"></label>
+      <label class="rem-r"><span>Diary reminder</span><input type="time" id="remDy"></label>
       <div class="rem-s" id="remStat"></div></div></div>
     <div class="foot-msg gold-text" id="footMsg"></div>`:
   `<div class="royal-card plain"><h2><span class="card-icon">${ic(icon)}</span>${name}</h2><div class="empty">${ic(icon)}Nothing here yet. Coming soon.</div></div>`;
@@ -851,7 +854,7 @@ async function nShare(name,blob,title,text){
 async function nativeOut(name,blob){
  try{if(/^image\//.test(blob.type))await nSaveImg(name,blob);else await nShare(name,blob,name,'Supreme data')}
  catch(e){const m=String((e&&e.message)||e);if(!/cancel/i.test(m))info('Could not complete',m)}}
-const RMK='supreme_rem_v1';let rem={on:true,am:'08:00',pm:'20:00'};
+const RMK='supreme_rem_v1';let rem={on:true,am:'08:00',pm:'20:00',dy:'22:00'};
 try{rem=Object.assign(rem,JSON.parse(localStorage.getItem(RMK)||'{}'))}catch(e){}
 const remEl=id=>document.getElementById(id),hm=s=>{const a=(s||'0:0').split(':');return{h:+a[0]||0,m:+a[1]||0}};
 const remStatus=t=>{const e=remEl('remStat');if(e)e.textContent=t};
@@ -859,7 +862,7 @@ async function remSync(){
  if(!NATIVE||!PL.LocalNotifications||!uname)return;
  const LN=PL.LocalNotifications;
  try{
-  const ids=[{id:1001},{id:1002}];for(let i=0;i<7;i++)ids.push({id:2000+i});
+  const ids=[{id:1001},{id:1002},{id:1003}];for(let i=0;i<7;i++)ids.push({id:2000+i});
   await LN.cancel({notifications:ids});await chan();
   if(!rem.on){remStatus('Reminders are off');return}
   let p=await LN.checkPermissions();
@@ -867,12 +870,13 @@ async function remSync(){
   const nm=uname||'Your Majesty',a=hm(rem.am),b=hm(rem.pm),now=new Date(),total=tasks.length,left=tasks.filter(t=>!t.done).length,list=[];
   list.push({id:1001,title:'Good Morning, '+nm,body:'Your tasks are waiting. Rule your day.',channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{on:{hour:a.h,minute:a.m},allowWhileIdle:true}});
   list.push({id:1002,title:'Evening check, '+nm,body:'Did you finish your tasks today? Open Supreme and complete them before the day ends.',channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{on:{hour:b.h,minute:b.m},allowWhileIdle:true}});
+  const c3=hm(rem.dy);list.push({id:1003,title:'Diary time, '+nm,body:'Write about your day in your diary before it ends.',channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{on:{hour:c3.h,minute:c3.m},allowWhileIdle:true}});
   await LN.schedule({notifications:list});
-  remStatus('Reminders active: '+rem.am+' and '+rem.pm)
+  remStatus('Reminders active: '+rem.am+', '+rem.pm+' and '+rem.dy)
  }catch(e){remStatus('Reminder error: '+String((e&&e.message)||e))}}
-function remChange(){rem={on:remEl('remOn').checked,am:remEl('remAm').value||'08:00',pm:remEl('remPm').value||'20:00'};try{localStorage.setItem(RMK,JSON.stringify(rem))}catch(x){}remSync()}
-remEl('remOn').checked=!!rem.on;remEl('remAm').value=rem.am;remEl('remPm').value=rem.pm;
-['remOn','remAm','remPm'].forEach(id=>remEl(id).addEventListener('change',remChange));
+function remChange(){rem={on:remEl('remOn').checked,am:remEl('remAm').value||'08:00',pm:remEl('remPm').value||'20:00',dy:remEl('remDy').value||'22:00'};try{localStorage.setItem(RMK,JSON.stringify(rem))}catch(x){}remSync()}
+remEl('remOn').checked=!!rem.on;remEl('remAm').value=rem.am;remEl('remPm').value=rem.pm;remEl('remDy').value=rem.dy;
+['remOn','remAm','remPm','remDy'].forEach(id=>remEl(id).addEventListener('change',remChange));
 if(!NATIVE)remStatus('Reminders work in the installed Android app.');
 async function chan(){try{await PL.LocalNotifications.createChannel({id:'supreme',name:'Supreme Reminders',description:'Daily reminders',importance:5,visibility:1,vibration:true,lights:true})}catch(e){}}
 
@@ -924,16 +928,18 @@ function dySave(){clearTimeout(dyT);dyT=setTimeout(()=>{try{localStorage.setItem
 function dyRec(k){return dy[k]||(dy[k]={p:[''],m:''})}
 function dyView(v){dyE('dyCover').style.display=v==='cover'?'':'none';dyE('dyBook').style.display=v==='book'?'':'none';dyE('dyCal').style.display=v==='cal'?'':'none';const s=document.getElementById('scroll');if(s)s.scrollTop=0}
 function dyRender(){
- const r=dy[dyCur]||{p:[''],m:''},today=dyKey(new Date());
+ const r=dy[dyCur]||{p:[''],m:''},today=dyKey(new Date()),ro=dyCur<today;
+ dyE('dyQ').textContent=ro?'Your mood that day':'How was your day?';dyE('dyEm').classList.toggle('lock',ro);
  while(r.p.length>1&&!r.p[r.p.length-1])r.p.pop();
  dyE('dyTitle').textContent=dyDate(dyCur).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short',year:'numeric'}).toUpperCase();
  dyE('dyNext').disabled=dyCur>=today;
  dyE('dyEm').innerHTML=MOODS.map(m=>'<button type="button" data-e="'+m[0]+'" class="'+(r.m===m[0]?'on':'')+'"><b>'+m[0]+'</b>'+m[1]+'</button>').join('');
  const box=dyE('dyPages');box.innerHTML='';
  r.p.forEach((t,i)=>{const pg=document.createElement('div');pg.className='dpage';
-  const ta=document.createElement('textarea');ta.spellcheck=false;ta.placeholder=i===0?'Dear diary...':'';ta.value=t;ta.dataset.i=i;
+  const ta=document.createElement('textarea');ta.spellcheck=false;ta.placeholder=ro?(i===0?'No entry on this day.':''):(i===0?'Dear diary...':'');ta.readOnly=ro;ta.value=t;ta.dataset.i=i;
   const n=document.createElement('div');n.className='pg';n.textContent=String(i+1);pg.appendChild(ta);pg.appendChild(n);box.appendChild(pg)})}
 function dyInput(ta){
+ if(dyCur<dyKey(new Date())){ta.value=((dy[dyCur]||{p:[]}).p[+ta.dataset.i])||'';return}
  const i=+ta.dataset.i,rec=dyRec(dyCur);rec.p[i]=ta.value;
  if(ta.scrollHeight>ta.clientHeight+2){
   const v=ta.value;let cut=v.length,g=0;
@@ -946,7 +952,7 @@ function dyInput(ta){
   return}
  dySave()}
 dyE('dyPages').addEventListener('input',e=>{if(e.target.tagName==='TEXTAREA')dyInput(e.target)});
-dyE('dyEm').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const r=dyRec(dyCur);r.m=r.m===b.dataset.e?'':b.dataset.e;dySave();
+dyE('dyEm').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||dyCur<dyKey(new Date()))return;const r=dyRec(dyCur);r.m=r.m===b.dataset.e?'':b.dataset.e;dySave();
  dyE('dyEm').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.e===r.m))});
 dyE('dyCover').onclick=()=>{dyCur=dyKey(new Date());dyRender();dyView('book')};
 dyE('dyClose').onclick=()=>dyView('cover');
