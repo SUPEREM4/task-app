@@ -289,6 +289,27 @@ linear-gradient(180deg,#0b0d12,#06070a);box-shadow:0 0 0 1px rgba(201,168,92,.22
 .cal-x{display:block;margin:12px auto 0;background:linear-gradient(180deg,#f0d684,#b88a2a);border:0;border-radius:14px;padding:11px 22px;font-family:'Cinzel',serif;letter-spacing:.18em;font-size:.7rem;color:#2a1b06;font-weight:700;cursor:pointer}
 html,body{touch-action:pan-x pan-y}
 .dy-em.lock button{opacity:.5;pointer-events:none}.dy-em.lock button.on{opacity:1}
+
+.tt-tg{margin:0 0 12px}.tt-tg.off{filter:grayscale(1) brightness(.6)}
+.tt-h,.tt-r{display:grid;grid-template-columns:40% 1fr 38px;gap:8px;align-items:start}
+.tt-h{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.18em;color:#8f8366;padding:0 4px 6px;border-bottom:1px solid rgba(201,168,92,.25);margin-bottom:8px}
+.tt-r{margin-bottom:10px}
+.tt-r input{width:100%;min-width:0;background:#0a0d12;border:1px solid rgba(201,168,92,.3);border-radius:12px;padding:11px 10px;color:var(--gold-hi);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;outline:0}
+.tt-r input:focus{border-color:var(--gold-hi)}
+.tt-n{display:block;margin:3px 4px 0;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.8rem;color:#8f8366}.tt-n.ok{color:#c9a85c}
+.tt-x{background:none;border:0;color:#a2573f;padding:10px 0;cursor:pointer}.tt-x svg{width:20px;height:20px}
+.tt-empty{text-align:center;font-style:italic;color:#8f8366;padding:18px 6px}
+.sl-form{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:8px;margin:10px 0 12px}
+.sl-form label{display:flex;flex-direction:column;gap:4px;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.14em;text-transform:uppercase;color:#b89a5a}
+.sl-form input{width:100%;min-width:0;background:#0a0d12;border:1px solid rgba(201,168,92,.3);border-radius:12px;padding:10px 6px;color:var(--gold-hi);color-scheme:dark;font-family:'Cinzel',serif;font-size:.68rem}
+.sl-save{display:block;width:100%;background:linear-gradient(180deg,#f0d684,#b88a2a);border:0;border-radius:14px;padding:12px;font-family:'Cinzel',serif;letter-spacing:.18em;font-size:.7rem;color:#2a1b06;font-weight:700;cursor:pointer}
+.sl-res{text-align:center;font-family:'Cinzel',serif;letter-spacing:.1em;font-size:.8rem;min-height:1.2em;margin:10px 0 2px;color:#e4d5b0}
+.sl-avg{text-align:center;font-style:italic;color:#b89a5a;margin:4px 0 10px}
+.sl-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 4px;border-top:1px solid rgba(201,168,92,.15);font-family:'Cormorant Garamond',serif;font-size:.98rem;color:#d8cba8}
+.sl-chip{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.1em;padding:2px 7px;border-radius:10px;border:1px solid currentColor;margin-left:4px}
+.sl-row button{background:none;border:0;color:#a2573f;font-size:1.2rem;cursor:pointer;padding:0 4px}
+#slChart{width:100%;height:auto;display:block;margin-top:8px}
+.sl-row{flex-wrap:wrap}.sl-row>span:nth-child(2){white-space:nowrap;margin-left:auto}
 </style>
 </head>
 <body>
@@ -298,6 +319,8 @@ html,body{touch-action:pan-x pan-y}
 <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6a2 2 0 0 0-2 2z"/><path d="M4 19.5a2 2 0 0 0 2 2h13V18"/><path d="M9 8h6"/></symbol>
 <symbol id="i-gem" viewBox="0 0 24 24"><path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4l-2 5 5 11 5-11-2-5"/></symbol>
 <symbol id="i-diary" viewBox="0 0 24 24"><path d="M6 3h11a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6z"/><path d="M6 3v18"/><path d="M10 8h5M10 12h5M10 16h3"/><path d="M3.5 7H6M3.5 12H6M3.5 17H6"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
 <symbol id="i-cal" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/><path d="M8 14h2M12 14h2M8 17h2"/></symbol>
 <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.8-3.4 7.8-8 9-4.6-1.2-8-4.2-8-9V6z"/><path d="M12 8v5M12 16v.5"/></symbol>
 <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></symbol>
@@ -377,7 +400,7 @@ html,body{touch-action:pan-x pan-y}
   if(out){try{localStorage.setItem(K,out)}catch(e){}inject(out)}
  }).catch(()=>{});
 })();
-const TABS=[['Home','home'],['Tasks','tasks'],['Rules','book'],['Rewards','gem'],['Diary','diary'],['Punishments','shield'],['Progress','trend'],['Certificates','seal'],['Achievements','trophy']];
+const TABS=[['Home','home'],['Tasks','tasks'],['Diary','diary'],['Timetable','clock'],['Rules','book'],['Rewards','gem'],['Punishments','shield'],['Progress','trend'],['Certificates','seal'],['Achievements','trophy']];
 const dock=document.getElementById('dockScroll'), scroll=document.getElementById('scroll');
 const ic=n=>`<svg class="ic"><use href="#i-${n}"/></svg>`;
 const HOME_HTML=`<div class="royal-card plain" style="margin-bottom:28px">
@@ -400,7 +423,12 @@ const PROG_HTML=`<div class="royal-card plain">
   <div class="seg"><button type="button" class="on" data-r="7">Weekly</button><button type="button" data-r="30">Monthly</button></div>
   <svg id="chart" viewBox="0 0 360 240" xmlns="http://www.w3.org/2000/svg"></svg>
   <div class="detail" id="detail"></div>
-  <div class="dl-row"><button type="button" class="dl" id="dlCsv">${ic('dl')}Data CSV</button><button type="button" class="dl" id="dlPng">${ic('dl')}Chart Image</button></div></div>`;
+  <div class="dl-row"><button type="button" class="dl" id="dlCsv">${ic('dl')}Data CSV</button><button type="button" class="dl" id="dlPng">${ic('dl')}Chart Image</button></div></div>
+<div class="royal-card plain" style="margin-top:16px"><h2><span class="card-icon">${ic('moon')}</span>Sleep Tracker</h2>
+ <div class="sl-form"><label>Date<input type="date" id="slDate"></label><label>Slept at<input type="time" id="slS"></label><label>Woke up<input type="time" id="slW"></label></div>
+ <button type="button" class="sl-save" id="slSave">Save Sleep</button><div class="sl-res" id="slRes"></div>
+ <svg id="slChart" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg"></svg>
+ <div class="sl-avg" id="slAvg"></div><div id="slList"></div></div>`;
 const LOG_HTML=(n,i,p)=>`<div class="royal-card plain"><h2><span class="card-icon">${ic(i)}</span>${n}</h2><div class="log-sum" id="${p}Sum"></div><div id="${p}List"></div></div>`;
 const CERT_HTML=`<div class="royal-card plain"><h2><span class="card-icon">${ic('seal')}</span>Certificates</h2>
  <div class="log-sum" id="certSum"></div><div id="certList"></div></div>`;
@@ -425,6 +453,10 @@ const DIARY_HTML=`<div class="dy">
   <div class="cal-note">Tap a date to open that day. The emoji is your mood.</div>
   <button type="button" class="cal-x" id="calX">BACK TO DIARY</button>
  </div></div>`;
+const TT_HTML=`<div class="royal-card plain"><div class="mission-head"><div class="mission-title">Timetable</div><button type="button" class="add-btn" id="ttAdd">${ic('plus')}Add</button></div>
+ <button type="button" class="add-btn tt-tg" id="ttOn">ALERTS: ON</button>
+ <div class="tt-h"><span>TIME</span><span>TO-DO</span><span></span></div>
+ <div id="ttRows"></div><div class="tt-empty" id="ttEmpty">Tap Add to make a line. Write the time like 7:10 - 7:20 AM. The alert comes at the start time (7:10).</div></div>`;
 const ACH_HTML=`<div class="royal-card plain"><h2><span class="card-icon">${ic('trophy')}</span>Achievements</h2>
  <div class="seg" id="achCat"><button type="button" data-v="Weekly">Weekly</button><button type="button" data-v="Monthly">Monthly</button><button type="button" data-v="Yearly">Yearly</button></div>
  <div class="seg sm" id="achSt"><button type="button" data-v="ongoing">Ongoing <i></i></button><button type="button" data-v="done">Completed <i></i></button><button type="button" data-v="not">Not Completed <i></i></button></div>
@@ -436,7 +468,7 @@ TABS.forEach(([name,icon],i)=>{
   b.onclick=()=>openTab(name);dock.appendChild(b);
   const p=document.createElement('section');
   p.className='panel'+(i===0?' active-panel':'');p.id='p-'+name;
-  p.innerHTML=name==='Home'?HOME_HTML:name==='Progress'?PROG_HTML:name==='Rules'?RULES_HTML:name==='Rewards'?LOG_HTML('Rewards','gem','rw'):name==='Diary'?DIARY_HTML:name==='Punishments'?LOG_HTML('Punishments','shield','pn'):name==='Achievements'?ACH_HTML:name==='Certificates'?CERT_HTML:name==='Tasks'?`<div class="royal-card plain">
+  p.innerHTML=name==='Home'?HOME_HTML:name==='Progress'?PROG_HTML:name==='Rules'?RULES_HTML:name==='Rewards'?LOG_HTML('Rewards','gem','rw'):name==='Diary'?DIARY_HTML:name==='Timetable'?TT_HTML:name==='Punishments'?LOG_HTML('Punishments','shield','pn'):name==='Achievements'?ACH_HTML:name==='Certificates'?CERT_HTML:name==='Tasks'?`<div class="royal-card plain">
     <div class="mission-head"><div class="mission-title">Today's Mission</div><button type="button" class="add-btn" id="addBtn">${ic('plus')}Add Task</button></div>
     <form class="add-form" id="addForm" autocomplete="off"><input id="taskInput" maxlength="80" placeholder="Write your task..."><button class="add-save" id="addSave" type="submit">Add</button></form>
     <div class="prog-row"><div class="progress"><i id="progFill"></i></div><span class="done-pill" id="donePill">0/0 DONE</span></div>
@@ -970,6 +1002,78 @@ dyE('calPrev').onclick=()=>{dyCalM.setMonth(dyCalM.getMonth()-1);dyCalRender()};
 dyE('calNext').onclick=()=>{dyCalM.setMonth(dyCalM.getMonth()+1);dyCalRender()};
 dyE('calX').onclick=()=>dyView('book');
 dyE('calG').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!b.dataset.k)return;if(b.dataset.k>dyKey(new Date()))return;dyCur=b.dataset.k;dyRender();dyView('book')});
+/* ===== SLEEP TRACKER ===== */
+const SLK='supreme_sleep_v1';let sl={};try{sl=JSON.parse(localStorage.getItem(SLK)||'{}')||{}}catch(e){sl={}}
+const slMin=t=>{const a=String(t||'').split(':');return(+a[0])*60+(+a[1]||0)};
+const slDur=r=>{let d=slMin(r.w)-slMin(r.s);if(d<=0)d+=1440;return d};
+const slRate=h=>h<6?['Bad','#e0524f']:(h>=7.5&&h<=9.5)?['Excellent','#5fd08a']:['Good','#e0b04a'];
+const slHM=m=>Math.floor(m/60)+'h '+String(m%60).padStart(2,'0')+'m';
+const slTf=t=>{const a=slMin(t),h=Math.floor(a/60)%24,m=a%60;return((h%12)||12)+':'+String(m).padStart(2,'0')+(h<12?' AM':' PM')};
+function slStore(){try{localStorage.setItem(SLK,JSON.stringify(sl))}catch(e){}}
+function slRender(){
+ const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(dyKey(d))}
+ const hrs=days.map(k=>sl[k]?slDur(sl[k])/60:null),top=Math.max(10,Math.ceil(Math.max.apply(null,hrs.map(h=>h||0))));
+ const W=360,H=220,L=30,B=30,T=22,iw=W-L-8,ih=H-B-T,bw=iw/7;let s='';
+ [0,4,8].concat(top>=12?[12]:[]).forEach(g=>{const y=T+ih-g/top*ih;s+='<line x1="'+L+'" x2="'+(W-8)+'" y1="'+y+'" y2="'+y+'" stroke="rgba(201,168,92,.18)"/><text x="'+(L-6)+'" y="'+(y+3)+'" fill="#8f8366" font-size="9" text-anchor="end">'+g+'h</text>'});
+ const ty=T+ih-7.5/top*ih;s+='<line x1="'+L+'" x2="'+(W-8)+'" y1="'+ty+'" y2="'+ty+'" stroke="#5fd08a" stroke-dasharray="4 4" opacity=".6"/>';
+ days.forEach((k,i)=>{const x=L+i*bw+bw*.18,w=bw*.64,dn=dyDate(k).toLocaleDateString('en-GB',{weekday:'short'}).toUpperCase().slice(0,2);
+  s+='<text x="'+(x+w/2)+'" y="'+(H-12)+'" fill="#a99c79" font-size="9" text-anchor="middle">'+dn+'</text>';
+  const h=hrs[i];if(h==null)return;const bh=Math.max(2,h/top*ih),y=T+ih-bh,c=slRate(h)[1];
+  s+='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+bh+'" rx="5" fill="'+c+'"/><text x="'+(x+w/2)+'" y="'+(y-5)+'" fill="#e4d5b0" font-size="9" text-anchor="middle">'+h.toFixed(1)+'</text>'});
+ remEl('slChart').innerHTML=s;
+ const got=days.filter(k=>sl[k]);
+ if(got.length){const avg=got.reduce((a,k)=>a+slDur(sl[k]),0)/got.length,r=slRate(avg/60);remEl('slAvg').textContent='7-day average: '+slHM(Math.round(avg))+' ('+r[0]+')'}else remEl('slAvg').textContent='Add your first night to see the chart.';
+ remEl('slList').innerHTML=Object.keys(sl).sort().reverse().slice(0,7).map(k=>{const m=slDur(sl[k]),r=slRate(m/60);
+  return '<div class="sl-row"><span>'+dyDate(k).toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' \u00B7 '+slTf(sl[k].s)+' \u2192 '+slTf(sl[k].w)+'</span><span style="color:'+r[1]+'">'+slHM(m)+'<span class="sl-chip">'+r[0].toUpperCase()+'</span></span><button type="button" data-k="'+k+'" aria-label="Delete">\u00D7</button></div>'}).join('')}
+function slFill(){const r=sl[remEl('slDate').value];remEl('slS').value=r?r.s:'';remEl('slW').value=r?r.w:''}
+remEl('slDate').max=dyKey(new Date());remEl('slDate').value=dyKey(new Date());remEl('slDate').onchange=slFill;
+remEl('slSave').onclick=()=>{const k=remEl('slDate').value,s=remEl('slS').value,w=remEl('slW').value;
+ if(!k||!s||!w){info('Sleep Tracker','Enter the date, sleep time and wake up time');return}
+ sl[k]={s:s,w:w};slStore();const m=slDur(sl[k]),r=slRate(m/60),e=remEl('slRes');e.textContent='Slept '+slHM(m)+' \u2014 '+r[0].toUpperCase();e.style.color=r[1];slRender()};
+remEl('slList').onclick=e=>{const b=e.target.closest('button');if(!b)return;delete sl[b.dataset.k];slStore();slRender()};
+slFill();slRender();
+/* ===== TIMETABLE (alerts at the START time) ===== */
+const TTK='supreme_tt_v1';let tt={on:true,rows:[]};try{tt=Object.assign(tt,JSON.parse(localStorage.getItem(TTK)||'{}'))}catch(e){}
+if(!Array.isArray(tt.rows))tt.rows=[];
+function ttParse(s){
+ const re=/(\d{1,2})(?:[:.](\d{2}))?\s*(a\.?m\.?|p\.?m\.?)?/gi,m=[];let x;
+ while(m.length<2&&(x=re.exec(String(s||''))))m.push(x);
+ if(!m.length)return null;
+ let h=+m[0][1],mi=+(m[0][2]||0),ap=(m[0][3]||'').toLowerCase().replace(/\./g,'');
+ if(!ap&&m[1]&&m[1][3])ap=m[1][3].toLowerCase().replace(/\./g,'');
+ if(h>23||mi>59)return null;
+ if(ap==='pm'&&h<12)h+=12;if(ap==='am'&&h===12)h=0;
+ return{h:h,m:mi}}
+const ttFmt=p=>((p.h%12)||12)+':'+String(p.m).padStart(2,'0')+(p.h<12?' AM':' PM');
+let ttT=null;
+function ttSave(){try{localStorage.setItem(TTK,JSON.stringify(tt))}catch(e){}clearTimeout(ttT);ttT=setTimeout(ttSync,900)}
+async function ttSync(){
+ if(!NATIVE||!PL.LocalNotifications||!uname)return;const LN=PL.LocalNotifications;
+ try{const ids=[];for(let i=0;i<150;i++)ids.push({id:3000+i});await LN.cancel({notifications:ids});
+  if(!tt.on)return;const list=[];
+  tt.rows.slice(0,150).forEach((r,i)=>{const p=ttParse(r.t);if(!p)return;
+   list.push({id:3000+i,title:(r.d||'').trim()||'Timetable',body:String(r.t).trim(),channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{on:{hour:p.h,minute:p.m},allowWhileIdle:true}})});
+  if(!list.length)return;
+  let pm=await LN.checkPermissions();if(pm.display!=='granted')pm=await LN.requestPermissions();if(pm.display!=='granted')return;
+  await chan();await LN.schedule({notifications:list})
+ }catch(e){}}
+function ttNote(el,v){const p=ttParse(v);el.textContent=p?'\uD83D\uDD14 Alert at '+ttFmt(p):(String(v).trim()?'No time found':'');el.className='tt-n'+(p?' ok':'')}
+function ttRender(){
+ const box=remEl('ttRows');box.innerHTML='';
+ tt.rows.forEach((row,i)=>{
+  const r=document.createElement('div');r.className='tt-r';
+  const c=document.createElement('div'),ti=document.createElement('input'),nt=document.createElement('small');
+  ti.type='text';ti.placeholder='7:10 - 7:20 AM';ti.value=row.t;ti.autocomplete='off';ttNote(nt,row.t);
+  ti.oninput=()=>{row.t=ti.value;ttNote(nt,ti.value);ttSave()};c.appendChild(ti);c.appendChild(nt);
+  const di=document.createElement('input');di.type='text';di.placeholder='To-do';di.value=row.d;di.autocomplete='off';di.oninput=()=>{row.d=di.value;ttSave()};
+  const x=document.createElement('button');x.type='button';x.className='tt-x';x.setAttribute('aria-label','Delete');x.innerHTML='<svg class="ic"><use href="#i-trash"/></svg>';
+  x.onclick=()=>{tt.rows.splice(i,1);ttRender();ttSave()};
+  r.appendChild(c);r.appendChild(di);r.appendChild(x);box.appendChild(r)});
+ remEl('ttOn').textContent='ALERTS: '+(tt.on?'ON':'OFF');remEl('ttOn').classList.toggle('off',!tt.on);
+ remEl('ttEmpty').style.display=tt.rows.length?'none':''}
+remEl('ttAdd').onclick=()=>{if(tt.rows.length>=150)return;tt.rows.push({t:'',d:''});ttRender();ttSave();const q=remEl('ttRows').querySelectorAll('.tt-r input');if(q.length>1)q[q.length-2].focus()};
+remEl('ttOn').onclick=()=>{tt.on=!tt.on;ttRender();ttSave()};
+ttRender();setTimeout(ttSync,2500);
 /* ===== RULEBOOK ===== */
 const RK='supreme_rules_v1';let rules=[],rbP=0;
 try{rules=JSON.parse(localStorage.getItem(RK)||'[]')||[]}catch(e){rules=[]}
