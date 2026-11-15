@@ -310,6 +310,91 @@ html,body{touch-action:pan-x pan-y}
 .sl-row button{background:none;border:0;color:#a2573f;font-size:1.2rem;cursor:pointer;padding:0 4px}
 #slChart{width:100%;height:auto;display:block;margin-top:8px}
 .sl-row{flex-wrap:wrap}.sl-row>span:nth-child(2){white-space:nowrap;margin-left:auto}
+
+.nd{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 18%,#43290f 0%,#1c0b10 46%,#050203 100%);overflow-y:auto;-webkit-overflow-scrolling:touch}
+.nd::before{content:'';position:fixed;inset:0;pointer-events:none;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'><g fill='none' stroke='%23e0b04a' stroke-opacity='.14' stroke-width='1'><path d='M28 4l24 24-24 24L4 28z'/><path d='M28 16l12 12-12 12-12-12z'/></g></svg>")}
+.nd-frame{position:fixed;inset:11px;border:2px solid #c9a85c;border-radius:6px;box-shadow:inset 0 0 0 6px #14070b,inset 0 0 0 7px rgba(240,214,132,.75),0 0 34px rgba(201,168,92,.38);pointer-events:none}
+.nd-in{position:relative;width:100%;max-width:430px;margin:auto;padding:46px 28px 40px;text-align:center}
+.nd-crown{width:104px;height:auto;filter:drop-shadow(0 0 16px rgba(255,200,80,.55))}
+.nd-k{font-family:'Cinzel',serif;letter-spacing:.34em;font-size:.6rem;color:#c9a85c;margin-top:4px}
+.nd-t{font-family:'Cinzel',serif;font-weight:700;font-size:1.65rem;line-height:1.25;letter-spacing:.1em;margin:8px 0 6px;background:linear-gradient(180deg,#fff1b8,#e0b04a 55%,#9a6a18);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nd-d{font-style:italic;font-size:1.12rem;color:#d8c48f}
+.nd-sub{font-family:'Cinzel',serif;letter-spacing:.16em;font-size:.68rem;color:#b89a5a;margin-top:6px}
+.nd-stk{margin:20px 0 12px;padding:16px 10px 14px;border:1px solid rgba(201,168,92,.5);border-radius:22px;background:rgba(10,5,8,.6);box-shadow:inset 0 0 40px rgba(201,168,92,.08)}
+.nd-fl{width:56px;height:56px;color:#f0a53a;stroke:currentColor;fill:rgba(255,160,50,.22);stroke-width:1.4;filter:drop-shadow(0 0 14px rgba(255,150,40,.85));animation:ndFl 1.5s ease-in-out infinite}
+@keyframes ndFl{50%{transform:scale(1.1);filter:drop-shadow(0 0 22px rgba(255,170,60,1))}}
+.nd-lab{font-family:'Cinzel',serif;letter-spacing:.34em;font-size:.66rem;color:#e0b04a;margin-top:2px}
+.nd-num{position:relative;height:88px;overflow:hidden;font-family:'Cinzel',serif;font-weight:700;font-size:4.3rem;line-height:88px;color:#fff1b8;text-shadow:0 0 24px rgba(255,200,80,.55)}
+.nd-num span{position:absolute;left:0;right:0}
+.nd-num .o{animation:ndOut .9s .8s cubic-bezier(.6,0,.3,1) forwards}
+.nd-num .n{transform:translateY(105%);opacity:0;animation:ndIn .9s .8s cubic-bezier(.2,.8,.2,1) forwards}
+.nd-num.same .n{transform:none;opacity:1;animation:none}
+@keyframes ndOut{to{transform:translateY(-105%);opacity:0}}
+@keyframes ndIn{to{transform:translateY(0);opacity:1}}
+.nd-unit{font-family:'Cinzel',serif;letter-spacing:.3em;font-size:.6rem;color:#b89a5a;margin-top:-2px}
+.nd-stk.bad .nd-fl{color:#8a8a8a;fill:rgba(140,140,140,.15);filter:none;animation:none}
+.nd-stk.bad .nd-num .n{color:#ff6b61;text-shadow:0 0 20px rgba(255,80,70,.5)}
+.nd-stk.bad .nd-num{animation:ndSh .5s 1.6s}
+@keyframes ndSh{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.nd-wish{font-style:italic;font-size:1.18rem;line-height:1.35;color:#e4d5b0;min-height:3.2em;margin:12px 6px 0;opacity:0;animation:ndFd .9s 1.9s forwards}
+@keyframes ndFd{to{opacity:1}}
+.nd-sp{position:absolute;width:6px;height:6px;border-radius:50%;background:#f0d684;box-shadow:0 0 10px #f0b43a;opacity:0;animation:ndSp 2.4s ease-out forwards;pointer-events:none}
+@keyframes ndSp{0%{opacity:0;transform:translateY(20px) scale(.4)}25%{opacity:1}100%{opacity:0;transform:translateY(-120px) scale(1)}}
+.nd-b{display:block;width:100%;margin-top:12px;padding:14px;border-radius:16px;font-family:'Cinzel',serif;letter-spacing:.2em;font-size:.72rem;font-weight:700;cursor:pointer}
+.nd-b.go{background:linear-gradient(180deg,#f0d684,#b88a2a);border:0;color:#2a1b06}
+.nd-b.ol{background:rgba(10,5,8,.55);border:1px solid #c9a85c;color:#f0d684}
+.nd-rep{display:none}
+.nd-rr{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;text-align:left;padding:12px 4px;border-bottom:1px solid rgba(201,168,92,.2)}
+.nd-rr b{font-family:'Cinzel',serif;font-weight:600;letter-spacing:.14em;font-size:.62rem;color:#b89a5a;flex:0 0 36%;padding-top:3px}
+.nd-rr span{flex:1;font-size:1.08rem;color:#eadfc3;text-align:right}
+.nd-bar{height:6px;border-radius:4px;background:rgba(201,168,92,.18);margin-top:6px;overflow:hidden}
+.nd-bar i{display:block;height:100%;background:linear-gradient(90deg,#9a6a18,#f0d684)}
+.nd-g{color:#5fd08a}.nd-r{color:#ff6b61}.nd-y{color:#e0b04a}
+/* ===== SUPERIOR TALK ===== */
+.sup-go{margin-top:14px;width:100%;padding:15px;border-radius:14px;border:1px solid var(--gold-hi);background:linear-gradient(135deg,#8a6d2b,#f5e7c8 50%,#8a6d2b);color:#1a1205;font-family:'Cinzel',serif;font-weight:700;letter-spacing:.16em;cursor:pointer;animation:supGlow 2s ease-in-out infinite}
+.sup-go.sm{padding:10px;font-size:.75rem;animation:none;opacity:.9}
+.sup-go:disabled{opacity:.5}
+@keyframes supGlow{0%,100%{box-shadow:0 0 12px rgba(201,168,92,.4)}50%{box-shadow:0 0 32px rgba(245,231,200,.9)}}
+#supCrown{position:absolute;right:14px;top:12px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(201,168,92,.55);background:rgba(0,0,0,.35);display:grid;place-items:center;cursor:pointer;z-index:2;animation:supGlow 2.4s ease-in-out infinite;padding:0}
+#supCrown img{width:28px;pointer-events:none}
+#supCrown b{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:#d9363e;color:#fff;font:700 .72rem/19px 'Cinzel',serif;text-align:center}
+.sup-ov{position:absolute;inset:0;z-index:70;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0,rgba(201,168,92,.22),transparent 60%),#05060a;animation:fadeIn .4s}
+.sup-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden}
+.sup-mid img{width:96px;filter:drop-shadow(0 0 18px rgba(245,231,200,.7));animation:supZoom 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes supZoom{from{opacity:0;transform:scale(.3) translateY(30px)}to{opacity:1;transform:none}}
+.sup-mid .a1,.sup-mid .a2,.sup-mid .a3{opacity:0;animation:fadeIn 1s forwards;font-family:'Cinzel',serif}
+.sup-mid .a1{font-size:.7rem;letter-spacing:.35em;color:var(--muted);margin-top:22px;animation-delay:.8s}
+.sup-mid .a2{font-size:1.5rem;font-weight:700;letter-spacing:.14em;margin-top:10px;animation-delay:1.3s}
+.sup-mid .a3{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:#b8a882;margin-top:14px;animation-delay:1.9s;max-width:310px}
+.sup-mid .sup-go{opacity:0;animation:fadeIn 1s 2.4s forwards,supGlow 2s 3.4s ease-in-out infinite}
+.sup-sp{position:absolute;bottom:-10px;width:4px;height:4px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 8px var(--gold);animation:supUp 4s linear infinite}
+@keyframes supUp{to{transform:translateY(-110vh);opacity:0}}
+.sc-head{flex:none;display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top)) 12px 10px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#17120c,#0b0c10)}
+.sc-head img{width:30px;filter:drop-shadow(0 0 6px rgba(245,231,200,.6))}
+.sc-head .who{flex:1;min-width:0;font-family:'Cinzel',serif;letter-spacing:.14em;font-size:.95rem;color:var(--gold-hi);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-head .who small{display:block;font-size:.55rem;letter-spacing:.2em;color:#6fcf8a;margin-top:2px}
+.sc-hb{background:rgba(0,0,0,.35);border:1px solid var(--line);color:var(--gold);border-radius:10px;padding:7px 10px;cursor:pointer;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em}
+.sc-msgs{flex:1;min-height:0;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px;scrollbar-width:none}
+.sc-msgs::-webkit-scrollbar{display:none}
+.sc-m{max-width:80%;padding:9px 13px;border-radius:16px;font-size:1.1rem;line-height:1.3;word-wrap:break-word;white-space:pre-wrap;animation:fadeIn .25s}
+.sc-m small{display:block;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.1em;opacity:.6;margin-top:3px}
+.sc-m.me{align-self:flex-end;background:linear-gradient(135deg,#8a6d2b,#c9a85c);color:#150f04;border-bottom-right-radius:4px}
+.sc-m.them{align-self:flex-start;background:rgba(25,31,43,.95);border:1px solid var(--line);border-bottom-left-radius:4px}
+.sc-m.sys{align-self:center;background:none;color:var(--muted);font-style:italic;font-size:.95rem;text-align:center}
+.sc-in{flex:none;display:flex;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:#0b0c10}
+.sc-in input{flex:1;min-width:0;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:22px;padding:11px 16px;color:#f0e9dc;font:inherit;font-size:1.1rem;outline:none}
+.sc-in button{border:0;border-radius:50%;width:44px;height:44px;background:linear-gradient(135deg,#8a6d2b,#f5e7c8);color:#150f04;font-size:1.2rem;cursor:pointer}
+.sc-in input:disabled,.sc-in button:disabled{opacity:.4}
+.sc-rm{display:block;width:100%;text-align:left;margin-bottom:10px;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(25,31,43,.9);color:var(--gold-hi);font-family:'Cinzel',serif;letter-spacing:.12em;cursor:pointer}
+.sc-rm small{display:block;font-size:.58rem;letter-spacing:.15em;color:var(--muted);margin-top:5px}
+.sf{flex:1;min-height:0;overflow-y:auto;padding:18px}
+.sf label{display:block;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.18em;color:var(--muted);margin-bottom:14px}
+.sf input,.sf textarea{display:block;width:100%;margin-top:6px;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:#f0e9dc;font:inherit;font-size:1.15rem;outline:none;resize:none}
+.sf input[readonly]{color:var(--gold);opacity:.8}
+.sf-e{color:#e07a7a;font-style:italic;min-height:1.2em}
+.sf-r{padding:10px 0;border-bottom:1px solid rgba(201,168,92,.14)}
+.sf-r span{display:block;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.18em;color:var(--muted)}
+.sf-r b{font-weight:500;font-size:1.15rem}
 </style>
 </head>
 <body>
@@ -382,6 +467,17 @@ html,body{touch-action:pan-x pan-y}
   <div class="cm" id="certModal"><canvas id="certCanvas"></canvas><div class="dl-row"><button type="button" class="dl" id="certDl"><svg class="ic"><use href="#i-dl"/></svg>Download</button><button type="button" class="dl" id="certSh"><svg class="ic"><use href="#i-share"/></svg>Share</button><button type="button" class="dl" id="certClose">Close</button></div></div>
 </div>
 
+
+<div class="nd" id="nd"><div class="nd-frame"></div><div class="nd-in">
+ <div id="ndMain"><img class="nd-crown" id="ndCrown" alt=""><div class="nd-k">✦ THE KINGDOM AWAITS ✦</div>
+  <div class="nd-t">A NEW DAY<br>BEGINS</div><div class="nd-d" id="ndDate"></div><div class="nd-sub" id="ndSub"></div>
+  <div class="nd-stk" id="ndStk"><svg class="nd-fl"><use href="#i-flame"/></svg><div class="nd-lab">STREAK</div>
+   <div class="nd-num" id="ndNum"></div><div class="nd-unit">DAYS</div><div class="nd-wish" id="ndWish"></div></div>
+  <button type="button" class="nd-b ol" id="ndRep">YESTERDAY'S REPORT</button>
+  <button type="button" class="nd-b go" id="ndGo">START MY DAY</button></div>
+ <div class="nd-rep" id="ndRepV"><div class="nd-k">✦ YESTERDAY'S REPORT ✦</div><div class="nd-t" style="font-size:1.35rem" id="ndRepT"></div>
+  <div id="ndRepB" style="margin-top:10px"></div><button type="button" class="nd-b ol" id="ndBack">BACK</button><button type="button" class="nd-b go" id="ndGo2">START MY DAY</button></div>
+</div></div>
 <script>
 (function(){try{if(!localStorage.getItem('supreme_reset_v6')){Object.keys(localStorage).filter(k=>k.indexOf('supreme_')===0&&k!=='supreme_fonts_v2').forEach(k=>localStorage.removeItem(k));localStorage.setItem('supreme_reset_v6','1')}}catch(e){}})();
 (function(){
@@ -411,7 +507,7 @@ const HOME_HTML=`<div class="royal-card plain" style="margin-bottom:28px">
    <div class="stat"><span class="stat-ic">${ic('tasks')}</span><div><b id="stTasks">0/0</b><span class="lbl">Tasks Done</span></div></div>
    <div class="stat danger"><span class="stat-ic">${ic('shield')}</span><div><b id="stPun">0 PAGES</b><span class="lbl">Punishment</span></div></div>
    <div class="stat"><span class="stat-ic">${ic('star')}</span><div><b id="stRating">0.0/5</b><span class="lbl">Overall Rating</span></div></div>
-   <div class="stat"><span class="stat-ic">${ic('flame')}</span><div><b>0 DAYS</b><span class="lbl">Streak</span></div></div>
+   <div class="stat"><span class="stat-ic">${ic('flame')}</span><div><b id="stStreak">0 DAYS</b><span class="lbl">Streak</span></div></div>
    <div class="stat reward"><span class="stat-ic">${ic('gem')}</span><div><b id="stReward"></b><span class="lbl">Reward</span></div></div>
   </div></div>
   <div class="royal-card plain quote-sec"><span class="q-mark">\u201C</span>
@@ -456,7 +552,7 @@ const DIARY_HTML=`<div class="dy">
 const TT_HTML=`<div class="royal-card plain"><div class="mission-head"><div class="mission-title">Timetable</div><button type="button" class="add-btn" id="ttAdd">${ic('plus')}Add</button></div>
  <button type="button" class="add-btn tt-tg" id="ttOn">ALERTS: ON</button>
  <div class="tt-h"><span>TIME</span><span>TO-DO</span><span></span></div>
- <div id="ttRows"></div><div class="tt-empty" id="ttEmpty">Tap Add to make a line. Write the time like 7:10 - 7:20 AM. The alert comes at the start time (7:10).</div></div>`;
+ <div id="ttRows"></div></div>`;
 const ACH_HTML=`<div class="royal-card plain"><h2><span class="card-icon">${ic('trophy')}</span>Achievements</h2>
  <div class="seg" id="achCat"><button type="button" data-v="Weekly">Weekly</button><button type="button" data-v="Monthly">Monthly</button><button type="button" data-v="Yearly">Yearly</button></div>
  <div class="seg sm" id="achSt"><button type="button" data-v="ongoing">Ongoing <i></i></button><button type="button" data-v="done">Completed <i></i></button><button type="button" data-v="not">Not Completed <i></i></button></div>
@@ -632,6 +728,7 @@ function renderHome(){
   fg.style.opacity=p>0?1:0;
   document.getElementById('homePercent').textContent=p+'%';
   document.getElementById('stTasks').textContent=done+'/'+total;
+  {const sk=document.getElementById('stStreak'),n=curStreak();if(sk)sk.textContent=n+(n===1?' DAY':' DAYS')}
   document.getElementById('stRating').textContent=(total?done/total*5:0).toFixed(1)+'/5';
   const left=total-done;document.getElementById('stPun').textContent=left+(left===1?' PAGE':' PAGES');
   const rw=document.getElementById('stReward');rw.textContent=full?'30 MIN MOBILE':'NONE';rw.parentNode.parentNode.classList.toggle('on',full);
@@ -682,8 +779,10 @@ function recordToday(){hist[ymd(new Date())]={total:tasks.length,done:tasks.filt
 function rollover(){ /* new day: tasks carry over, unchecked; missed days saved as 0% */
   const today=ymd(new Date());let last=null;try{last=localStorage.getItem(DK)}catch(e){}
   if(last===today)return false;
+  if(last)window.__nd=last;
   if(last){const d=new Date(last+'T00:00:00');for(d.setDate(d.getDate()+1);ymd(d)<today;d.setDate(d.getDate()+1))hist[ymd(d)]={total:tasks.length,done:0};tasks.forEach(t=>t.done=false);save()}
   try{localStorage.setItem(DK,today)}catch(e){}
+  if(last)setTimeout(ndCheck,500);
   return !!last;
 }
 let range=7,selI=-1,cpts=[];
@@ -1057,7 +1156,7 @@ async function ttSync(){
   let pm=await LN.checkPermissions();if(pm.display!=='granted')pm=await LN.requestPermissions();if(pm.display!=='granted')return;
   await chan();await LN.schedule({notifications:list})
  }catch(e){}}
-function ttNote(el,v){const p=ttParse(v);el.textContent=p?'\uD83D\uDD14 Alert at '+ttFmt(p):(String(v).trim()?'No time found':'');el.className='tt-n'+(p?' ok':'')}
+function ttNote(el,v){const p=ttParse(v);el.textContent=!tt.on?'':(p?'Alert at '+ttFmt(p):(String(v).trim()?'No time found':''));el.className='tt-n'+(p?' ok':'')}
 function ttRender(){
  const box=remEl('ttRows');box.innerHTML='';
  tt.rows.forEach((row,i)=>{
@@ -1069,11 +1168,62 @@ function ttRender(){
   const x=document.createElement('button');x.type='button';x.className='tt-x';x.setAttribute('aria-label','Delete');x.innerHTML='<svg class="ic"><use href="#i-trash"/></svg>';
   x.onclick=()=>{tt.rows.splice(i,1);ttRender();ttSave()};
   r.appendChild(c);r.appendChild(di);r.appendChild(x);box.appendChild(r)});
- remEl('ttOn').textContent='ALERTS: '+(tt.on?'ON':'OFF');remEl('ttOn').classList.toggle('off',!tt.on);
- remEl('ttEmpty').style.display=tt.rows.length?'none':''}
+ remEl('ttOn').textContent='ALERTS: '+(tt.on?'ON':'OFF');remEl('ttOn').classList.toggle('off',!tt.on);}
 remEl('ttAdd').onclick=()=>{if(tt.rows.length>=150)return;tt.rows.push({t:'',d:''});ttRender();ttSave();const q=remEl('ttRows').querySelectorAll('.tt-r input');if(q.length>1)q[q.length-2].focus()};
 remEl('ttOn').onclick=()=>{tt.on=!tt.on;ttRender();ttSave()};
 ttRender();setTimeout(ttSync,2500);
+/* ===== NEW DAY SCREEN + STREAK ===== */
+function ndPerfect(k){const h=hist[k];return !!h&&h.total>0&&h.done===h.total}
+function streakEnd(k){let n=0;const d=dyDate(k);while(ndPerfect(ymd(d))&&n<5000){n++;d.setDate(d.getDate()-1)}return n}
+function curStreak(){const t=new Date(),y=new Date();y.setDate(y.getDate()-1);return ndPerfect(ymd(t))?streakEnd(ymd(t)):streakEnd(ymd(y))}
+const ndMile={1:'Your streak begins. The first flame is lit!',3:'Three days strong. A habit is born!',7:'One full week! You are unstoppable.',14:'Two weeks of pure discipline. Legendary!',21:'21 days. This is who you are now.',30:'30 days. A true Majesty!',50:'50 days. The kingdom bows to you.',100:'100 days. A legend lives on!'};
+const ndUp=['Another day conquered. Keep the flame alive!','The kingdom grows stronger with you.','Discipline looks good on you, Your Majesty.','Keep going. Greatness is a daily habit.'];
+function ndWish(o,n){
+ if(n>o){return ndMile[n]||ndUp[n%ndUp.length]}
+ if(o>0)return 'Your '+o+'-day streak has ended. A king rises again. Start fresh today.';
+ return 'No streak yet. Finish every task today and light the flame.'}
+function ndRow(a,b){return '<div class="nd-rr"><b>'+a+'</b><span>'+b+'</span></div>'}
+function ndReport(k){
+ const h=hist[k]||{total:0,done:0},p=pctOf(h.done,h.total),full=h.total>0&&h.done===h.total,left=Math.max(0,h.total-h.done);
+ let r='';
+ r+=ndRow('TASKS DONE',h.total?h.done+' / '+h.total:'No tasks set');
+ r+=ndRow('PROGRESS',p+'%<div class="nd-bar"><i style="width:'+p+'%"></i></div>');
+ r+=ndRow('REWARD',full?'<span class="nd-g">30 min mobile earned</span>':'None');
+ r+=ndRow('PUNISHMENT',left>0?'<span class="nd-r">'+left+(left===1?' page':' pages')+' to read</span>':'None');
+ const s=sl[k];
+ if(s){const m=slDur(s),q=slRate(m/60);r+=ndRow('SLEEP',slTf(s.s)+' \u2192 '+slTf(s.w)+'<br>'+slHM(m)+' \u00B7 <span style="color:'+q[1]+'">'+q[0].toUpperCase()+'</span>')}
+ else r+=ndRow('SLEEP','Not added');
+ const al=Object.keys(ach).filter(id=>ach[id]&&ach[id].date===k).map(id=>{const a=ACH.find(x=>x.id===id);return a?a.title:''}).filter(Boolean);
+ r+=ndRow('ACHIEVEMENTS',al.length?al.slice(0,4).join('<br>')+(al.length>4?'<br>+'+(al.length-4)+' more':''):'None');
+ return r}
+function ndShow(d){
+ const E=id=>document.getElementById(id),nd=E('nd');
+ const crown=document.querySelector('.lg-crown');if(crown)E('ndCrown').src=crown.src;
+ const dt=dyDate(d.yk);dt.setDate(dt.getDate()+1);
+ E('ndDate').textContent=DAYN[dt.getDay()]+' \u00B7 '+dt.getDate()+' '+MON[dt.getMonth()]+' '+dt.getFullYear();
+ E('ndSub').textContent='RULE IT, '+String(uname||'YOUR MAJESTY').toUpperCase();
+ const bad=d.neu<=d.old&&d.neu===0&&d.old>0,same=d.old===d.neu,up=d.neu>d.old;
+ const stk=E('ndStk');stk.className='nd-stk'+(d.neu===0?' bad':'');
+ const num=E('ndNum');num.className='nd-num'+(same?' same':'');
+ num.innerHTML=same?'<span class="n">'+d.neu+'</span>':'<span class="o">'+d.old+'</span><span class="n">'+d.neu+'</span>';
+ E('ndWish').textContent=ndWish(d.old,d.neu);
+ stk.querySelectorAll('.nd-sp').forEach(x=>x.remove());
+ if(up)for(let i=0;i<26;i++){const s=document.createElement('i');s.className='nd-sp';s.style.left=(8+Math.random()*84)+'%';s.style.top=(35+Math.random()*50)+'%';s.style.animationDelay=(1.5+Math.random()*1.4)+'s';stk.appendChild(s)}
+ E('ndRepT').textContent=DAYN[dyDate(d.yk).getDay()].toUpperCase()+' \u00B7 '+dyDate(d.yk).getDate()+' '+MON[dyDate(d.yk).getMonth()].toUpperCase();
+ E('ndRepB').innerHTML=ndReport(d.yk);
+ E('ndMain').style.display='';E('ndRepV').style.display='none';
+ nd.style.display='flex';nd.scrollTop=0}
+(function(){const E=id=>document.getElementById(id),close=()=>{E('nd').style.display='none'};
+ E('ndGo').onclick=close;E('ndGo2').onclick=close;
+ E('ndRep').onclick=()=>{E('ndMain').style.display='none';E('ndRepV').style.display='block';E('nd').scrollTop=0};
+ E('ndBack').onclick=()=>{E('ndRepV').style.display='none';E('ndMain').style.display='';E('nd').scrollTop=0}})();
+function ndCheck(){
+ const last=window.__nd;window.__nd=null;if(!last||!uname)return;
+ const y=new Date();y.setDate(y.getDate()-1);const yk=ymd(y);if(last>yk)return;
+ let o,n;
+ if(last===yk){const b=new Date();b.setDate(b.getDate()-2);o=streakEnd(ymd(b));n=ndPerfect(yk)?o+1:0}
+ else{o=streakEnd(last);n=0}
+ ndShow({yk:yk,old:o,neu:n})}
 /* ===== RULEBOOK ===== */
 const RK='supreme_rules_v1';let rules=[],rbP=0;
 try{rules=JSON.parse(localStorage.getItem(RK)||'[]')||[]}catch(e){rules=[]}
@@ -1140,6 +1290,152 @@ function tick(){const d=new Date();
   document.getElementById('date').textContent=`${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
   if(d.getMinutes()!==lm){lm=d.getMinutes();greet(d);renderQuote();if(rollover())renderTasks()}}
 tick();setInterval(tick,1000);
+/* ===== SUPERIOR AUDIENCE (request -> approve -> chat) ===== */
+const SUP={
+ PASS:'superior',      // Superior passcode - CHANGE THIS
+ DB:'https://supreme-12f47-default-rtdb.firebaseio.com',                // Firebase Realtime DB URL e.g. 'https://xxxx-default-rtdb.firebaseio.com' (empty = same-device test mode)
+ DAY:0,                // 0 = Sunday
+ FROM:'',TO:''         // exact time later, e.g. FROM:'18:00', TO:'20:00' (empty = whole Sunday)
+};
+const SUK='supreme_sup_unlock',SRK='supreme_sup_role',SMK='supreme_sup_mute',SUP_TEST=/[?&]superior=test/.test(location.search);
+const sg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+/* sounds (WebAudio, no files) */
+let _ac=null;const muted=()=>sg(SMK)==='1';
+function ac(){if(!_ac){const C=window.AudioContext||window.webkitAudioContext;if(C)_ac=new C()}if(_ac&&_ac.state==='suspended')_ac.resume();return _ac}
+function tone(f,t0,d,ty,v,f2){const a=ac();if(!a||muted())return;const T=a.currentTime+t0,o=a.createOscillator(),g=a.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,T);if(f2)o.frequency.exponentialRampToValueAtTime(f2,T+d);g.gain.setValueAtTime(.0001,T);g.gain.exponentialRampToValueAtTime(v||.15,T+.02);g.gain.exponentialRampToValueAtTime(.0001,T+d);o.connect(g);g.connect(a.destination);o.start(T);o.stop(T+d+.05)}
+function noise(t0,d,f1,f2,v){const a=ac();if(!a||muted())return;const T=a.currentTime+t0,n=Math.floor(a.sampleRate*d),b=a.createBuffer(1,n,a.sampleRate),x=b.getChannelData(0);for(let i=0;i<n;i++)x[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;const fl=a.createBiquadFilter();fl.type='bandpass';fl.Q.value=1.2;fl.frequency.setValueAtTime(f1,T);fl.frequency.exponentialRampToValueAtTime(f2,T+d);const g=a.createGain();g.gain.setValueAtTime(.0001,T);g.gain.exponentialRampToValueAtTime(v,T+d*.5);g.gain.exponentialRampToValueAtTime(.0001,T+d);s.connect(fl);fl.connect(g);g.connect(a.destination);s.start(T)}
+const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+const SFX={
+ tap:()=>tone(660,0,.08,'triangle',.08),
+ send:()=>{tone(520,0,.09,'sine',.12);tone(780,.07,.12,'sine',.1)},
+ recv:()=>{tone(880,0,.15,'sine',.12);tone(1320,.1,.3,'sine',.09);vib(60)},
+ fanfare:()=>{[392,523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.55,'triangle',.13));tone(1047,.7,1.3,'sawtooth',.04);tone(130,0,1.8,'sine',.22);vib([80,60,80,60,200])},
+ open:()=>{noise(0,1.5,200,3500,.2);tone(55,0,2,'sine',.4,38);[523,784,1047,1568].forEach((f,i)=>tone(f,1.2+i*.16,1,'triangle',.1));vib([40,40,120])},
+ close:()=>tone(440,0,.5,'sine',.1,180)
+};
+/* helpers */
+const sup$=id=>document.getElementById(id),shell=document.querySelector('.app-shell');
+const roomOf=()=>String(uname||'guest').toLowerCase().replace(/[^a-z0-9]/g,'')||'guest';
+const isSup=()=>sg(SRK)==='sup';
+function supHM(t){const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())}
+function openNow(){if(SUP_TEST)return true;const d=new Date();if(d.getDay()!==SUP.DAY)return false;if(!SUP.FROM||!SUP.TO)return true;const c=s=>{const p=s.split(':');return +p[0]*60+ +p[1]},m=d.getHours()*60+d.getMinutes();return m>=c(SUP.FROM)&&m<c(SUP.TO)}
+/* transport: Firebase REST if SUP.DB set, else localStorage (same device test) */
+const wk=()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+async function tx(op,rm,arg){
+ const B=SUP.DB?SUP.DB.replace(/\/$/,'')+'/supchat':'';
+ const J=async(u,o)=>{const r=await fetch(u,o);if(!r.ok)throw 0;return r.json()};
+ if(B){
+  if(op==='send')return (await J(B+'/chat/'+rm+'.json',{method:'POST',body:JSON.stringify(arg)})).name;
+  if(op==='get')return (await J(B+'/chat/'+rm+'.json?orderBy="$key"'+(arg?'&startAt="'+arg+'"':'')))||{};
+  if(op==='reqSet'){await J(B+'/req/'+rm+'.json',{method:'PUT',body:JSON.stringify(arg)});return}
+  if(op==='reqGet')return await J(B+'/req/'+rm+'.json');
+  if(op==='reqAll')return (await J(B+'/req.json'))||{}}
+ const C='supreme_supchat_',R='supreme_supreq_',jp=k=>{try{return JSON.parse(sg(k)||'null')}catch(e){return null}};
+ if(op==='send'){const o=jp(C+rm)||{},k=String(Date.now()).padStart(15,'0')+Math.random().toString(36).slice(2,5);o[k]=arg;ss(C+rm,JSON.stringify(o));return k}
+ if(op==='get'){const o=jp(C+rm)||{},r={};Object.keys(o).sort().forEach(k=>{if(!arg||k>=arg)r[k]=o[k]});return r}
+ if(op==='reqSet'){ss(R+rm,JSON.stringify(arg));return}
+ if(op==='reqGet')return jp(R+rm);
+ if(op==='reqAll'){const r={};Object.keys(localStorage).filter(k=>k.indexOf(R)===0).forEach(k=>r[k.slice(R.length)]=jp(k));return r}}
+/* notifications: native Capacitor LocalNotifications (same channel as your reminders) */
+let _nid=5000;
+async function permAsk(){try{const LN=PL.LocalNotifications;if(NATIVE&&LN){const p=await LN.checkPermissions();if(p.display!=='granted')await LN.requestPermissions()}}catch(e){}}
+async function notify(t,b){try{const LN=PL.LocalNotifications;if(!(NATIVE&&LN))return;
+ try{await LN.createChannel({id:'supreme',name:'Supreme Reminders',description:'Daily reminders',importance:5,visibility:1,vibration:true,lights:true})}catch(e){}
+ _nid=_nid>=5900?5000:_nid+1;
+ await LN.schedule({notifications:[{id:_nid,title:t,body:b,channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{at:new Date(Date.now()+700),allowWhileIdle:true}}]})}catch(e){}}
+/* overlays */
+let ov=null,poll=null,CH=null,myReq=null;
+function crownSrc(){const c=document.querySelector('.lg-crown');return c?c.src:''}
+function ovMake(){supClose(true);ov=document.createElement('div');ov.className='sup-ov';shell.appendChild(ov);return ov}
+function supClose(q){clearInterval(poll);poll=null;CH=null;if(ov){ov.remove();ov=null;if(!q)SFX.close()}}
+function sparks(n){let s='';for(let i=0;i<n;i++)s+='<i class="sup-sp" style="left:'+(Math.random()*100)+'%;animation-delay:'+(Math.random()*4)+'s"></i>';return s}
+function msgView(k,note){
+ const T={pending:['\u2726 REQUEST SUBMITTED \u2726','AWAITING SUPERIOR','Your request has been submitted. Please wait to be approved by Superior. You will be notified here the moment a decision is made.'],
+  declined:['\u2726 DECISION RECEIVED \u2726','NOT THIS TIME','Superior has chosen not to speak this week.'+(note?'<br><br>\u201c'+esc(note)+'\u201d':'')+'<br><br>Keep your streak alive and request again next Sunday.'],
+  approved:['\u2726 REQUEST APPROVED \u2726','SUPERIOR WILL SEE YOU','Your request has been approved. Superior is ready to speak with you.'+(note?'<br><br>\u201c'+esc(note)+'\u201d':'')],
+  closed:['\u2726 APPROVED \u2726','NOT OPEN RIGHT NOW','You are approved, but the audience is only open at the set Sunday time. Come back then.']}[k];
+ const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+T[0]+'</div><div class="a2 gold-text">'+T[1]+'</div><div class="a3">'+T[2]+'</div><button class="sup-go" id="scOk" style="max-width:280px;animation-delay:2.4s">'+(k==='approved'?'ENTER':'OK')+'</button></div>';
+ sup$('scOk').onclick=()=>{if(k==='approved'&&openNow()){SFX.tap();intro(()=>chatView(roomOf(),'u'),'Speak freely. Superior is listening.')}else supClose()}}
+function intro(cb,sub){
+ const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(22)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 AN AUDIENCE IS GRANTED \u2726</div><div class="a2 gold-text">SUPERIOR AWAITS</div><div class="a3">'+sub+'</div></div>';
+ SFX.open();setTimeout(()=>{if(ov===o)cb()},3300)}
+/* user request form */
+function formView(){
+ let n=0;try{n=curStreak()}catch(e){}
+ const o=ovMake();o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">REQUEST AN AUDIENCE<small style="color:var(--muted)">TALK WITH SUPERIOR</small></div><button class="sc-hb" id="scX">CLOSE</button></div><div class="sf"><label>Name<input id="sfN" maxlength="30" value="'+esc(uname||'')+'"></label><label>Age<input id="sfA" type="number" inputmode="numeric" min="5" max="99"></label><label>Current streak<input id="sfS" value="'+n+' days" readonly></label><label>Reason to talk with Superior<textarea id="sfR" maxlength="400" rows="5" placeholder="Why do you want to speak with Superior?"></textarea></label><div class="sf-e" id="sfE"></div><button class="sup-go" id="sfGo">SUBMIT REQUEST</button></div>';
+ sup$('scX').onclick=()=>supClose();
+ sup$('sfGo').onclick=async()=>{const nm=sup$('sfN').value.trim(),ag=sup$('sfA').value.trim(),rs=sup$('sfR').value.trim(),E=sup$('sfE');
+  if(!nm||!ag||!rs){E.textContent='Please fill every field.';return}
+  const b=sup$('sfGo');b.disabled=true;b.textContent='SENDING...';
+  const r={name:nm,age:+ag,streak:n,reason:rs,status:'pending',week:wk(),t:Date.now()};
+  try{await tx('reqSet',roomOf(),r);myReq=r;ss('supreme_sup_seen','');permAsk();SFX.send();msgView('pending')}catch(e){E.textContent='Could not send. Check internet and try again.';b.disabled=false;b.textContent='SUBMIT REQUEST'}}}
+/* chat */
+function supHM(t){const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())}
+function lineHTML(m,mine){return '<div class="sc-m '+(mine?'me':'them')+'">'+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+supHM(m.t)+'</small></div>'}
+function chatView(rm,role){
+ const o=ovMake();
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">'+(role==='s'?esc(rm.toUpperCase()):'SUPERIOR')+'<small id="scSt">\u25cf LIVE</small></div>'+(role==='s'?'<button class="sc-hb" id="scBk">INBOX</button>':'')+'<button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">'+(role==='s'?'Speak, Superior.':'You are in the presence of Superior. Speak your mind.')+'</div></div><div class="sc-in"><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
+ const M=sup$('scM'),I=sup$('scI'),B=sup$('scS');CH={rm,role,seen:{},last:'',first:true};
+ const add=(k,m)=>{if(CH.seen[k])return;CH.seen[k]=1;if(k>CH.last)CH.last=k;const mine=m.f===role;M.insertAdjacentHTML('beforeend',lineHTML(m,mine));M.scrollTop=M.scrollHeight;if(!mine&&!CH.first)SFX.recv()};
+ const pull=async()=>{if(!CH)return;try{const r=await tx('get',rm,CH.last);Object.keys(r).sort().forEach(k=>add(k,r[k]));CH.first=false;sup$('scSt').textContent='\u25cf LIVE';sup$('scSt').style.color=''}catch(e){const s=sup$('scSt');if(s){s.textContent='\u25cb OFFLINE';s.style.color='#d96a6a'}}
+  if(role==='u'&&!openNow()&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Return next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
+ const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();try{const m={f:role,n:role==='s'?'Superior':uname,t:Date.now(),x:t};const k=await tx('send',rm,m);CH.first=true;add(k,m);CH.first=false}catch(e){I.value=t}};
+ B.onclick=send;I.onkeydown=e=>{if(e.key==='Enter')send();else if(e.key.length===1&&Math.random()<.35)tone(900+Math.random()*300,0,.03,'square',.02)};
+ sup$('scX').onclick=()=>supClose();sup$('scMu').onclick=e=>{ss(SMK,muted()?'0':'1');e.target.textContent=muted()?'\ud83d\udd07':'\ud83d\udd0a';SFX.tap()};
+ if(role==='s')sup$('scBk').onclick=()=>{SFX.tap();inbox()};
+ pull();poll=setInterval(pull,2500);setTimeout(()=>I.focus(),300)}
+/* Superior inbox + decision */
+const BADGE={pending:'\u23f3 PENDING',approved:'\u2714 APPROVED',declined:'\u2716 DECLINED'};
+async function inbox(){
+ const o=ovMake();let all={};try{all=await tx('reqAll')}catch(e){}
+ const L=Object.keys(all).filter(k=>all[k]).map(k=>Object.assign({rm:k},all[k])).sort((a,b)=>(a.status==='pending'?0:1)-(b.status==='pending'?0:1)||b.t-a.t);
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR INBOX<small>'+(SUP.DB?'\u25cf ONLINE':'\u25cf SAME-DEVICE TEST MODE')+'</small></div><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs">'+(L.length?L.map((r,i)=>'<button class="sc-rm" data-i="'+i+'">'+esc(String(r.name||r.rm).toUpperCase())+'<small>'+esc(BADGE[r.status]||'')+' \u00b7 '+(r.week===wk()?'THIS WEEK':esc(r.week||''))+'</small></button>').join(''):'<div class="sc-m sys">No requests yet.</div>')+'</div>';
+ sup$('scX').onclick=()=>supClose();
+ o.querySelectorAll('.sc-rm').forEach(b=>b.onclick=()=>{SFX.tap();reqView(L[+b.dataset.i])})}
+function reqView(r){
+ const o=ovMake(),row=(a,b)=>'<div class="sf-r"><span>'+a+'</span><b>'+esc(String(b))+'</b></div>';
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">'+esc(String(r.name||r.rm).toUpperCase())+'<small style="color:var(--muted)">'+esc(BADGE[r.status]||'')+'</small></div><button class="sc-hb" id="scBk">INBOX</button></div><div class="sf">'+row('AGE',r.age)+row('STREAK',r.streak+' days')+row('WEEK OF',r.week)+row('REQUESTED',new Date(r.t).toLocaleString())+'<div class="sf-r"><span>REASON</span><b style="white-space:pre-wrap">'+esc(r.reason||'')+'</b></div><label>Note to user (optional)<input id="sfNote" maxlength="120"></label><button class="sup-go" id="rqY">APPROVE</button><button class="sup-go sm" id="rqN" style="margin-top:10px;background:#3a1218;color:#f0c9c9;border-color:#7a2a34">DECLINE</button>'+(r.status==='approved'?'<button class="sup-go sm" id="rqC" style="margin-top:10px">OPEN CHAT</button>':'')+'</div>';
+ sup$('scBk').onclick=()=>inbox();
+ const dec=async st=>{SFX.tap();try{await tx('reqSet',r.rm,{name:r.name,age:r.age,streak:r.streak,reason:r.reason,status:st,week:r.week,t:r.t,dt:Date.now(),note:sup$('sfNote').value.trim()});st==='approved'?SFX.fanfare():SFX.close();inbox()}catch(e){alert('Could not save decision.')}};
+ sup$('rqY').onclick=()=>dec('approved');sup$('rqN').onclick=()=>dec('declined');
+ const c=sup$('rqC');if(c)c.onclick=()=>chatView(r.rm,'s')}
+/* entry points */
+let taps=0,tapT=null;
+function superiorLogin(){
+ if(isSup()){ac();SFX.tap();inbox();return}
+ const p=prompt('Superior passcode');if(p===null)return;
+ if(p===SUP.PASS){ss(SRK,'sup');ac();permAsk();SFX.fanfare();crownBtn();inbox()}else alert('Not recognised.')}
+async function crownTap(){
+ ac();SFX.tap();if(isSup())return inbox();
+ await loadReq();
+ if(!myReq)return formView();
+ if(myReq.status==='pending')return msgView('pending');
+ if(myReq.status==='declined')return msgView('declined',myReq.note);
+ if(!openNow())return msgView('closed');
+ msgView('approved',myReq.note)}
+async function loadReq(){try{const r=await tx('reqGet',roomOf());myReq=r&&r.week===wk()?r:null}catch(e){}return myReq}
+function crownBtn(){
+ const card=document.querySelector('#p-Home .royal-card');if(!card)return;
+ let b=sup$('supCrown');if(!b){b=document.createElement('button');b.id='supCrown';b.type='button';b.onclick=crownTap;card.appendChild(b)}
+ const show=isSup()||(sg(SUK)==='1'&&openNow());
+ if(b.dataset.s!==String(show)+crownSrc().length){b.dataset.s=String(show)+crownSrc().length;b.innerHTML='<img src="'+crownSrc()+'" alt=""><b id="supBd" style="display:none"></b>'}
+ b.style.display=show?'':'none'}
+/* unlock + background watchers */
+function unlockShow(){
+ const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(30)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 LEGENDARY ACHIEVEMENT \u2726</div><div class="a2 gold-text">TALK WITH SUPERIOR</div><div class="a3">Seven days of unbroken discipline. Every Sunday, tap the crown on your Home screen and request a word with Superior himself.</div><button class="sup-go" id="scOk" style="max-width:280px;animation-delay:2.4s">ACCEPT THE HONOUR</button></div>';
+ SFX.fanfare();permAsk();sup$('scOk').onclick=()=>supClose()}
+async function supTick(){
+ try{if(sg(SUK)!=='1'&&uname&&curStreak()>=7){ss(SUK,'1');crownBtn();unlockShow()}}catch(e){}
+ crownBtn();
+ if(isSup()){try{const all=await tx('reqAll'),seen=JSON.parse(sg('supreme_sup_sseen')||'[]');let p=0;
+   Object.keys(all).forEach(k=>{const r=all[k];if(!r||r.status!=='pending')return;p++;const id=k+'|'+r.t;if(seen.indexOf(id)<0){seen.push(id);SFX.recv();notify('New request for Superior',(r.name||k)+' wants to talk with you.')}});
+   ss('supreme_sup_sseen',JSON.stringify(seen.slice(-200)));const bd=sup$('supBd');if(bd){bd.textContent=p;bd.style.display=p?'':'none'}}catch(e){}}
+ else if(sg(SUK)==='1'&&uname){await loadReq();const r=myReq;
+  if(r&&r.status!=='pending'){const id=r.week+r.status+(r.dt||0);if(sg('supreme_sup_seen')!==id){ss('supreme_sup_seen',id);
+   notify(r.status==='approved'?'Superior approved your request':'Superior replied',r.status==='approved'?'Tap the crown to enter.':'Open the app to read the decision.');
+   if(!ov){r.status==='approved'?SFX.fanfare():SFX.close();msgView(r.status,r.note)}}}}}
+(function(){const t=document.querySelector('.tb-title');if(t)t.addEventListener('click',()=>{if(isSup())return;taps++;clearTimeout(tapT);tapT=setTimeout(()=>taps=0,1500);if(taps>=5){taps=0;superiorLogin()}})})();
+supTick();setInterval(supTick,8000);
 </script>
 </body>
 </html>
