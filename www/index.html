@@ -352,20 +352,21 @@ html,body{touch-action:pan-x pan-y}
 .nd-g{color:#5fd08a}.nd-r{color:#ff6b61}.nd-y{color:#e0b04a}
 /* ===== SUPERIOR TALK ===== */
 .sup-go{margin-top:14px;width:100%;padding:15px;border-radius:14px;border:1px solid var(--gold-hi);background:linear-gradient(135deg,#8a6d2b,#f5e7c8 50%,#8a6d2b);color:#1a1205;font-family:'Cinzel',serif;font-weight:700;letter-spacing:.16em;cursor:pointer;animation:supGlow 2s ease-in-out infinite}
-.sup-go.sm{padding:10px;font-size:.75rem;animation:none;opacity:.9}
-.sup-go:disabled{opacity:.5}
+.sup-go:disabled{opacity:.45;animation:none}
 @keyframes supGlow{0%,100%{box-shadow:0 0 12px rgba(201,168,92,.4)}50%{box-shadow:0 0 32px rgba(245,231,200,.9)}}
-#supCrown{position:absolute;right:14px;top:12px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(201,168,92,.55);background:rgba(0,0,0,.35);display:grid;place-items:center;cursor:pointer;z-index:2;animation:supGlow 2.4s ease-in-out infinite;padding:0}
-#supCrown img{width:28px;pointer-events:none}
-#supCrown b{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;border-radius:10px;background:#d9363e;color:#fff;font:700 .72rem/19px 'Cinzel',serif;text-align:center}
+#supCrown{position:relative;margin-left:auto;flex:none;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;cursor:pointer;z-index:2;padding:0;color:var(--gold);background:linear-gradient(145deg,#2a2419,#120e08);border:1px solid rgba(201,168,92,.5);box-shadow:0 0 14px rgba(201,168,92,.15),inset 0 1px 0 rgba(255,255,255,.08)}
+#supCrown img{width:25px;height:auto;pointer-events:none;animation:supCrownGlow 2.6s ease-in-out infinite}
+@keyframes supCrownGlow{0%,100%{filter:drop-shadow(0 0 2px rgba(201,168,92,.55))}50%{filter:drop-shadow(0 0 7px rgba(245,231,200,1)) drop-shadow(0 0 2px rgba(255,240,200,.9))}}
 .sup-ov{position:absolute;inset:0;z-index:70;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0,rgba(201,168,92,.22),transparent 60%),#05060a;animation:fadeIn .4s}
-.sup-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:hidden}
+.sup-mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;position:relative;overflow:auto}
 .sup-mid img{width:96px;filter:drop-shadow(0 0 18px rgba(245,231,200,.7));animation:supZoom 1.6s cubic-bezier(.2,.8,.2,1) both}
 @keyframes supZoom{from{opacity:0;transform:scale(.3) translateY(30px)}to{opacity:1;transform:none}}
 .sup-mid .a1,.sup-mid .a2,.sup-mid .a3{opacity:0;animation:fadeIn 1s forwards;font-family:'Cinzel',serif}
 .sup-mid .a1{font-size:.7rem;letter-spacing:.35em;color:var(--muted);margin-top:22px;animation-delay:.8s}
 .sup-mid .a2{font-size:1.5rem;font-weight:700;letter-spacing:.14em;margin-top:10px;animation-delay:1.3s}
 .sup-mid .a3{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:#b8a882;margin-top:14px;animation-delay:1.9s;max-width:310px}
+.sup-mid .a3 b{color:var(--gold-hi);font-style:normal}
+.warn{color:#ff8a8a;font-style:normal;font-weight:600}
 .sup-mid .sup-go{opacity:0;animation:fadeIn 1s 2.4s forwards,supGlow 2s 3.4s ease-in-out infinite}
 .sup-sp{position:absolute;bottom:-10px;width:4px;height:4px;border-radius:50%;background:var(--gold-hi);box-shadow:0 0 8px var(--gold);animation:supUp 4s linear infinite}
 @keyframes supUp{to{transform:translateY(-110vh);opacity:0}}
@@ -385,16 +386,17 @@ html,body{touch-action:pan-x pan-y}
 .sc-in input{flex:1;min-width:0;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:22px;padding:11px 16px;color:#f0e9dc;font:inherit;font-size:1.1rem;outline:none}
 .sc-in button{border:0;border-radius:50%;width:44px;height:44px;background:linear-gradient(135deg,#8a6d2b,#f5e7c8);color:#150f04;font-size:1.2rem;cursor:pointer}
 .sc-in input:disabled,.sc-in button:disabled{opacity:.4}
-.sc-rm{display:block;width:100%;text-align:left;margin-bottom:10px;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(25,31,43,.9);color:var(--gold-hi);font-family:'Cinzel',serif;letter-spacing:.12em;cursor:pointer}
-.sc-rm small{display:block;font-size:.58rem;letter-spacing:.15em;color:var(--muted);margin-top:5px}
 .sf{flex:1;min-height:0;overflow-y:auto;padding:18px}
 .sf label{display:block;font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.18em;color:var(--muted);margin-bottom:14px}
 .sf input,.sf textarea{display:block;width:100%;margin-top:6px;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:#f0e9dc;font:inherit;font-size:1.15rem;outline:none;resize:none}
 .sf input[readonly]{color:var(--gold);opacity:.8}
 .sf-e{color:#e07a7a;font-style:italic;min-height:1.2em}
-.sf-r{padding:10px 0;border-bottom:1px solid rgba(201,168,92,.14)}
-.sf-r span{display:block;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.18em;color:var(--muted)}
-.sf-r b{font-weight:500;font-size:1.15rem}
+.tm{padding-left:1.4em;margin:4px 0 22px}
+.tm li{font-size:1.2rem;line-height:1.35;margin-bottom:10px;color:#e8dfc6}
+.tm li::marker{color:var(--gold);font-family:'Cinzel',serif}
+.tm-c{text-align:center;font-family:'Cinzel',serif;font-weight:700;font-size:1.25rem;letter-spacing:.35em;margin:6px 0 26px}
+.sf label.tm-ck{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:0;color:#d9cfae;display:flex;align-items:flex-start;gap:10px;line-height:1.3}
+.sf label.tm-ck input{display:inline-block;width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#c9a85c}
 </style>
 </head>
 <body>
@@ -1290,16 +1292,10 @@ function tick(){const d=new Date();
   document.getElementById('date').textContent=`${d.getDate()} ${M[d.getMonth()]} ${d.getFullYear()}`;
   if(d.getMinutes()!==lm){lm=d.getMinutes();greet(d);renderQuote();if(rollover())renderTasks()}}
 tick();setInterval(tick,1000);
-/* ===== SUPERIOR AUDIENCE (request -> approve -> chat) ===== */
-const SUP={
- PASS:'superior',      // Superior passcode - CHANGE THIS
- DB:'https://supreme-12f47-default-rtdb.firebaseio.com',                // Firebase Realtime DB URL e.g. 'https://xxxx-default-rtdb.firebaseio.com' (empty = same-device test mode)
- DAY:0,                // 0 = Sunday
- FROM:'',TO:''         // exact time later, e.g. FROM:'18:00', TO:'20:00' (empty = whole Sunday)
-};
-const SUK='supreme_sup_unlock',SRK='supreme_sup_role',SMK='supreme_sup_mute',SUP_TEST=/[?&]superior=test/.test(location.search);
+/* ===== SUPERIOR (user side): approval form -> terms -> approval with time -> timed chat + notices ===== */
+const SUP={DB:'https://supreme-12f47-default-rtdb.firebaseio.com',ROOT:'supchat',DAY:0};
+const SUK='supreme_sup_unlock',SMK='supreme_sup_mute',SUP_TEST=false;
 const sg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
-/* sounds (WebAudio, no files) */
 let _ac=null;const muted=()=>sg(SMK)==='1';
 function ac(){if(!_ac){const C=window.AudioContext||window.webkitAudioContext;if(C)_ac=new C()}if(_ac&&_ac.state==='suspended')_ac.resume();return _ac}
 function tone(f,t0,d,ty,v,f2){const a=ac();if(!a||muted())return;const T=a.currentTime+t0,o=a.createOscillator(),g=a.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,T);if(f2)o.frequency.exponentialRampToValueAtTime(f2,T+d);g.gain.setValueAtTime(.0001,T);g.gain.exponentialRampToValueAtTime(v||.15,T+.02);g.gain.exponentialRampToValueAtTime(.0001,T+d);o.connect(g);g.connect(a.destination);o.start(T);o.stop(T+d+.05)}
@@ -1313,128 +1309,111 @@ const SFX={
  open:()=>{noise(0,1.5,200,3500,.2);tone(55,0,2,'sine',.4,38);[523,784,1047,1568].forEach((f,i)=>tone(f,1.2+i*.16,1,'triangle',.1));vib([40,40,120])},
  close:()=>tone(440,0,.5,'sine',.1,180)
 };
-/* helpers */
 const sup$=id=>document.getElementById(id),shell=document.querySelector('.app-shell');
 const roomOf=()=>String(uname||'guest').toLowerCase().replace(/[^a-z0-9]/g,'')||'guest';
-const isSup=()=>sg(SRK)==='sup';
-function supHM(t){const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())}
-function openNow(){if(SUP_TEST)return true;const d=new Date();if(d.getDay()!==SUP.DAY)return false;if(!SUP.FROM||!SUP.TO)return true;const c=s=>{const p=s.split(':');return +p[0]*60+ +p[1]},m=d.getHours()*60+d.getMinutes();return m>=c(SUP.FROM)&&m<c(SUP.TO)}
-/* transport: Firebase REST if SUP.DB set, else localStorage (same device test) */
-const wk=()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
-async function tx(op,rm,arg){
- const B=SUP.DB?SUP.DB.replace(/\/$/,'')+'/supchat':'';
- const J=async(u,o)=>{const r=await fetch(u,o);if(!r.ok)throw 0;return r.json()};
- if(B){
-  if(op==='send')return (await J(B+'/chat/'+rm+'.json',{method:'POST',body:JSON.stringify(arg)})).name;
-  if(op==='get')return (await J(B+'/chat/'+rm+'.json?orderBy="$key"'+(arg?'&startAt="'+arg+'"':'')))||{};
-  if(op==='reqSet'){await J(B+'/req/'+rm+'.json',{method:'PUT',body:JSON.stringify(arg)});return}
-  if(op==='reqGet')return await J(B+'/req/'+rm+'.json');
-  if(op==='reqAll')return (await J(B+'/req.json'))||{}}
- const C='supreme_supchat_',R='supreme_supreq_',jp=k=>{try{return JSON.parse(sg(k)||'null')}catch(e){return null}};
- if(op==='send'){const o=jp(C+rm)||{},k=String(Date.now()).padStart(15,'0')+Math.random().toString(36).slice(2,5);o[k]=arg;ss(C+rm,JSON.stringify(o));return k}
- if(op==='get'){const o=jp(C+rm)||{},r={};Object.keys(o).sort().forEach(k=>{if(!arg||k>=arg)r[k]=o[k]});return r}
- if(op==='reqSet'){ss(R+rm,JSON.stringify(arg));return}
- if(op==='reqGet')return jp(R+rm);
- if(op==='reqAll'){const r={};Object.keys(localStorage).filter(k=>k.indexOf(R)===0).forEach(k=>r[k.slice(R.length)]=jp(k));return r}}
-/* notifications: native Capacitor LocalNotifications (same channel as your reminders) */
+const todayK=(d=new Date())=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const wk=()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return todayK(d)};
+const mins=s=>{const p=String(s).split(':');return +p[0]*60+ +p[1]};
+const fmt12=s=>{const m=mins(s),h=Math.floor(m/60);return ((h+11)%12+1)+':'+pad(m%60)+' '+(h<12?'AM':'PM')};
+async function fb(m,p,b,q){const r=await fetch(SUP.DB+'/'+SUP.ROOT+'/'+p+'.json'+(q||''),{method:m,body:b===undefined?undefined:JSON.stringify(b)});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+/* native notifications (same plugin + channel as your reminders) */
 let _nid=5000;
 async function permAsk(){try{const LN=PL.LocalNotifications;if(NATIVE&&LN){const p=await LN.checkPermissions();if(p.display!=='granted')await LN.requestPermissions()}}catch(e){}}
-async function notify(t,b){try{const LN=PL.LocalNotifications;if(!(NATIVE&&LN))return;
+async function notify(t,b,at,id){try{const LN=PL.LocalNotifications;if(!(NATIVE&&LN))return;
  try{await LN.createChannel({id:'supreme',name:'Supreme Reminders',description:'Daily reminders',importance:5,visibility:1,vibration:true,lights:true})}catch(e){}
- _nid=_nid>=5900?5000:_nid+1;
- await LN.schedule({notifications:[{id:_nid,title:t,body:b,channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{at:new Date(Date.now()+700),allowWhileIdle:true}}]})}catch(e){}}
+ if(!id){_nid=_nid>=5900?5000:_nid+1;id=_nid}
+ await LN.schedule({notifications:[{id:id,title:t,body:b,channelId:'supreme',smallIcon:'ic_stat_supreme',largeIcon:'ic_large_supreme',iconColor:'#C9A85C',schedule:{at:at||new Date(Date.now()+700),allowWhileIdle:true}}]})}catch(e){}}
 /* overlays */
 let ov=null,poll=null,CH=null,myReq=null;
 function crownSrc(){const c=document.querySelector('.lg-crown');return c?c.src:''}
 function ovMake(){supClose(true);ov=document.createElement('div');ov.className='sup-ov';shell.appendChild(ov);return ov}
 function supClose(q){clearInterval(poll);poll=null;CH=null;if(ov){ov.remove();ov=null;if(!q)SFX.close()}}
 function sparks(n){let s='';for(let i=0;i<n;i++)s+='<i class="sup-sp" style="left:'+(Math.random()*100)+'%;animation-delay:'+(Math.random()*4)+'s"></i>';return s}
-function msgView(k,note){
- const T={pending:['\u2726 REQUEST SUBMITTED \u2726','AWAITING SUPERIOR','Your request has been submitted. Please wait to be approved by Superior. You will be notified here the moment a decision is made.'],
-  declined:['\u2726 DECISION RECEIVED \u2726','NOT THIS TIME','Superior has chosen not to speak this week.'+(note?'<br><br>\u201c'+esc(note)+'\u201d':'')+'<br><br>Keep your streak alive and request again next Sunday.'],
-  approved:['\u2726 REQUEST APPROVED \u2726','SUPERIOR WILL SEE YOU','Your request has been approved. Superior is ready to speak with you.'+(note?'<br><br>\u201c'+esc(note)+'\u201d':'')],
-  closed:['\u2726 APPROVED \u2726','NOT OPEN RIGHT NOW','You are approved, but the audience is only open at the set Sunday time. Come back then.']}[k];
- const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+T[0]+'</div><div class="a2 gold-text">'+T[1]+'</div><div class="a3">'+T[2]+'</div><button class="sup-go" id="scOk" style="max-width:280px;animation-delay:2.4s">'+(k==='approved'?'ENTER':'OK')+'</button></div>';
- sup$('scOk').onclick=()=>{if(k==='approved'&&openNow()){SFX.tap();intro(()=>chatView(roomOf(),'u'),'Speak freely. Superior is listening.')}else supClose()}}
-function intro(cb,sub){
- const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(22)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 AN AUDIENCE IS GRANTED \u2726</div><div class="a2 gold-text">SUPERIOR AWAITS</div><div class="a3">'+sub+'</div></div>';
- SFX.open();setTimeout(()=>{if(ov===o)cb()},3300)}
-/* user request form */
-function formView(){
- let n=0;try{n=curStreak()}catch(e){}
- const o=ovMake();o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">REQUEST AN AUDIENCE<small style="color:var(--muted)">TALK WITH SUPERIOR</small></div><button class="sc-hb" id="scX">CLOSE</button></div><div class="sf"><label>Name<input id="sfN" maxlength="30" value="'+esc(uname||'')+'"></label><label>Age<input id="sfA" type="number" inputmode="numeric" min="5" max="99"></label><label>Current streak<input id="sfS" value="'+n+' days" readonly></label><label>Reason to talk with Superior<textarea id="sfR" maxlength="400" rows="5" placeholder="Why do you want to speak with Superior?"></textarea></label><div class="sf-e" id="sfE"></div><button class="sup-go" id="sfGo">SUBMIT REQUEST</button></div>';
+function cardView(a1,a2,a3,btn,ok){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+a1+'</div><div class="a2 gold-text">'+a2+'</div><div class="a3">'+a3+'</div><button class="sup-go" id="scOk" style="max-width:280px">'+btn+'</button></div>';sup$('scOk').onclick=ok||(()=>supClose())}
+function intro(cb,sub){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(22)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 AN AUDIENCE IS GRANTED \u2726</div><div class="a2 gold-text">SUPERIOR AWAITS</div><div class="a3">'+sub+'</div></div>';SFX.open();setTimeout(()=>{if(ov===o)cb()},3300)}
+/* approval window */
+function audState(r){if(!r||!r.from)return 'none';const n=new Date(),k=todayK(),m=n.getHours()*60+n.getMinutes();if(r.wd<k||(r.wd===k&&m>=mins(r.to)))return 'over';if(r.wd>k||m<mins(r.from))return 'wait';return 'now'}
+function audText(r){const d=r.wd===todayK()?'today':r.wd;return 'Superior will be active <b>'+d+'</b> from <b>'+fmt12(r.from)+'</b> to <b>'+fmt12(r.to)+'</b>.<br>Be present on time.<br><br><span class="warn">WARNING: If you do not come, you will lose the chance to talk with Superior.</span>'+(r.note?'<br><br>\u201c'+esc(r.note)+'\u201d':'')}
+function msgView(k,r){
+ if(k==='pending')return cardView('\u2726 REQUEST SUBMITTED \u2726','AWAITING SUPERIOR','Your request has been submitted. Please wait to be approved by Superior. You will be notified here the moment a decision is made.','OK');
+ if(k==='declined')return cardView('\u2726 DECISION RECEIVED \u2726','NOT THIS TIME','Superior has chosen not to speak this week.'+(r.note?'<br><br>\u201c'+esc(r.note)+'\u201d':'')+'<br><br>Keep your streak alive and request again next Sunday.','OK');
+ const s=audState(r);
+ if(s==='over')return cardView('\u2726 AUDIENCE OVER \u2726','YOU MISSED YOUR TIME','Your audience time has passed. You have lost this chance. Request again next Sunday.','OK');
+ cardView('\u2726 REQUEST APPROVED \u2726','SUPERIOR WILL SEE YOU',s==='none'?'Your request has been approved. Superior will share the time soon.':audText(r),s==='now'?'ENTER':'OK',()=>{if(s==='now'){SFX.tap();intro(()=>chatView(roomOf()),'Speak freely. Superior is listening.')}else supClose()})}
+/* approval form -> terms */
+const DEF_T={rules:['Respect Superior.',"Don't use bad language.","Don't raise your voice against Superior.",'Always follow Superior.','Be present at the exact time given. If you are absent, the chance is lost.','Speak with honesty and humility. Never lie to Superior.','Come with a clear purpose. No spam and no repeated messages.','What is said in the audience stays private.',"Superior's decision is final."],closing:'HAIL SUPERIOR'};
+function head(t,s,back){return '<div class="sc-head">'+(back?'<button class="sc-hb" id="scBk">\u2039</button>':'')+'<img src="'+crownSrc()+'" alt=""><div class="who">'+t+'<small style="color:var(--muted)">'+s+'</small></div><button class="sc-hb" id="scX">CLOSE</button></div>'}
+function formView(d){
+ d=d||{};let n=0;try{n=curStreak()}catch(e){}
+ const o=ovMake();o.innerHTML=head('APPROVAL FORM','TALK WITH SUPERIOR')+'<div class="sf"><label>Name<input id="sfN" maxlength="30" value="'+esc(d.name||uname||'')+'"></label><label>Age<input id="sfA" type="number" inputmode="numeric" min="5" max="99" value="'+esc(d.age||'')+'"></label><label>Current streak<input id="sfS" value="'+n+' days" readonly></label><label>Reason to talk with Superior<textarea id="sfR" maxlength="400" rows="5" placeholder="Why do you want to speak with Superior?">'+esc(d.reason||'')+'</textarea></label><div class="sf-e" id="sfE"></div><button class="sup-go" id="sfGo">CONTINUE</button></div>';
  sup$('scX').onclick=()=>supClose();
- sup$('sfGo').onclick=async()=>{const nm=sup$('sfN').value.trim(),ag=sup$('sfA').value.trim(),rs=sup$('sfR').value.trim(),E=sup$('sfE');
-  if(!nm||!ag||!rs){E.textContent='Please fill every field.';return}
-  const b=sup$('sfGo');b.disabled=true;b.textContent='SENDING...';
-  const r={name:nm,age:+ag,streak:n,reason:rs,status:'pending',week:wk(),t:Date.now()};
-  try{await tx('reqSet',roomOf(),r);myReq=r;ss('supreme_sup_seen','');permAsk();SFX.send();msgView('pending')}catch(e){E.textContent='Could not send. Check internet and try again.';b.disabled=false;b.textContent='SUBMIT REQUEST'}}}
-/* chat */
-function supHM(t){const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())}
-function lineHTML(m,mine){return '<div class="sc-m '+(mine?'me':'them')+'">'+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+supHM(m.t)+'</small></div>'}
-function chatView(rm,role){
- const o=ovMake();
- o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">'+(role==='s'?esc(rm.toUpperCase()):'SUPERIOR')+'<small id="scSt">\u25cf LIVE</small></div>'+(role==='s'?'<button class="sc-hb" id="scBk">INBOX</button>':'')+'<button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">'+(role==='s'?'Speak, Superior.':'You are in the presence of Superior. Speak your mind.')+'</div></div><div class="sc-in"><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
- const M=sup$('scM'),I=sup$('scI'),B=sup$('scS');CH={rm,role,seen:{},last:'',first:true};
- const add=(k,m)=>{if(CH.seen[k])return;CH.seen[k]=1;if(k>CH.last)CH.last=k;const mine=m.f===role;M.insertAdjacentHTML('beforeend',lineHTML(m,mine));M.scrollTop=M.scrollHeight;if(!mine&&!CH.first)SFX.recv()};
- const pull=async()=>{if(!CH)return;try{const r=await tx('get',rm,CH.last);Object.keys(r).sort().forEach(k=>add(k,r[k]));CH.first=false;sup$('scSt').textContent='\u25cf LIVE';sup$('scSt').style.color=''}catch(e){const s=sup$('scSt');if(s){s.textContent='\u25cb OFFLINE';s.style.color='#d96a6a'}}
-  if(role==='u'&&!openNow()&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Return next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
- const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();try{const m={f:role,n:role==='s'?'Superior':uname,t:Date.now(),x:t};const k=await tx('send',rm,m);CH.first=true;add(k,m);CH.first=false}catch(e){I.value=t}};
+ sup$('sfGo').onclick=()=>{const nm=sup$('sfN').value.trim(),ag=sup$('sfA').value.trim(),rs=sup$('sfR').value.trim();if(!nm||!ag||!rs){sup$('sfE').textContent='Please fill every field.';return}SFX.tap();termsView({name:nm,age:+ag,streak:n,reason:rs})}}
+async function termsView(d){
+ const o=ovMake();o.innerHTML=head('TERMS & CONDITIONS','READ CAREFULLY')+'<div class="sf"><div class="sc-m sys">Loading...</div></div>';sup$('scX').onclick=()=>supClose();
+ let T=DEF_T;try{const t=await fb('GET','cfg/terms');if(t&&t.rules)T={rules:Object.values(t.rules).filter(Boolean),closing:t.closing||'HAIL SUPERIOR'}}catch(e){}
+ if(ov!==o)return;
+ o.innerHTML=head('TERMS & CONDITIONS','READ CAREFULLY',1)+'<div class="sf"><ol class="tm">'+T.rules.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ol><div class="tm-c gold-text">'+esc(T.closing)+'</div><label class="tm-ck"><input type="checkbox" id="tmCk">I have read the rules and I agree to follow every one of them.</label><div class="sf-e" id="sfE"></div><button class="sup-go" id="tmGo" disabled>AGREE &amp; SUBMIT</button></div>';
+ sup$('scX').onclick=()=>supClose();sup$('scBk').onclick=()=>formView(d);
+ sup$('tmCk').onchange=e=>{sup$('tmGo').disabled=!e.target.checked};
+ sup$('tmGo').onclick=async()=>{const b=sup$('tmGo');b.disabled=true;b.textContent='SENDING...';
+  const r={name:d.name,age:d.age,streak:d.streak,reason:d.reason,status:'pending',week:wk(),t:Date.now(),agreed:true};
+  try{await fb('PUT','req/'+roomOf(),r);myReq=r;ss('supreme_sup_seen','');permAsk();SFX.send();msgView('pending',r)}catch(e){sup$('sfE').textContent='Could not send ('+String((e&&e.message)||e)+'). Tell Claude this code.';b.disabled=false;b.textContent='AGREE & SUBMIT'}}}
+/* chat (user side) */
+function lineHTML(m,mine){const d=new Date(m.t);return '<div class="sc-m '+(mine?'me':'them')+'">'+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+pad(d.getHours())+':'+pad(d.getMinutes())+'</small></div>'}
+function chatView(rm){
+ const o=ovMake(),until=myReq&&myReq.to?' \u00b7 UNTIL '+fmt12(myReq.to):'';
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR<small id="scSt">\u25cf LIVE'+until+'</small></div><button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">You are in the presence of Superior. Speak your mind.</div></div><div class="sc-in"><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
+ const M=sup$('scM'),I=sup$('scI'),B=sup$('scS');CH={seen:{},last:'',first:true};
+ const add=(k,m)=>{if(CH.seen[k])return;CH.seen[k]=1;if(k>CH.last)CH.last=k;const mine=m.f==='u';M.insertAdjacentHTML('beforeend',lineHTML(m,mine));M.scrollTop=M.scrollHeight;if(!mine&&!CH.first)SFX.recv()};
+ const pull=async()=>{if(!CH)return;const st=sup$('scSt');try{const r=(await fb('GET','chat/'+rm,undefined,'?orderBy="$key"'+(CH.last?'&startAt="'+CH.last+'"':'')))||{};Object.keys(r).sort().forEach(k=>add(k,r[k]));CH.first=false;if(st){st.textContent='\u25cf LIVE'+until;st.style.color=''}}catch(e){if(st){st.textContent='\u25cb OFFLINE';st.style.color='#d96a6a'}}
+  if(audState(myReq)!=='now'&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Request again next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
+ const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();try{const m={f:'u',n:uname,t:Date.now(),x:t};const r=await fb('POST','chat/'+rm,m);CH.first=true;add(r.name,m);CH.first=false}catch(e){I.value=t}};
  B.onclick=send;I.onkeydown=e=>{if(e.key==='Enter')send();else if(e.key.length===1&&Math.random()<.35)tone(900+Math.random()*300,0,.03,'square',.02)};
  sup$('scX').onclick=()=>supClose();sup$('scMu').onclick=e=>{ss(SMK,muted()?'0':'1');e.target.textContent=muted()?'\ud83d\udd07':'\ud83d\udd0a';SFX.tap()};
- if(role==='s')sup$('scBk').onclick=()=>{SFX.tap();inbox()};
  pull();poll=setInterval(pull,2500);setTimeout(()=>I.focus(),300)}
-/* Superior inbox + decision */
-const BADGE={pending:'\u23f3 PENDING',approved:'\u2714 APPROVED',declined:'\u2716 DECLINED'};
-async function inbox(){
- const o=ovMake();let all={};try{all=await tx('reqAll')}catch(e){}
- const L=Object.keys(all).filter(k=>all[k]).map(k=>Object.assign({rm:k},all[k])).sort((a,b)=>(a.status==='pending'?0:1)-(b.status==='pending'?0:1)||b.t-a.t);
- o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR INBOX<small>'+(SUP.DB?'\u25cf ONLINE':'\u25cf SAME-DEVICE TEST MODE')+'</small></div><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs">'+(L.length?L.map((r,i)=>'<button class="sc-rm" data-i="'+i+'">'+esc(String(r.name||r.rm).toUpperCase())+'<small>'+esc(BADGE[r.status]||'')+' \u00b7 '+(r.week===wk()?'THIS WEEK':esc(r.week||''))+'</small></button>').join(''):'<div class="sc-m sys">No requests yet.</div>')+'</div>';
- sup$('scX').onclick=()=>supClose();
- o.querySelectorAll('.sc-rm').forEach(b=>b.onclick=()=>{SFX.tap();reqView(L[+b.dataset.i])})}
-function reqView(r){
- const o=ovMake(),row=(a,b)=>'<div class="sf-r"><span>'+a+'</span><b>'+esc(String(b))+'</b></div>';
- o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">'+esc(String(r.name||r.rm).toUpperCase())+'<small style="color:var(--muted)">'+esc(BADGE[r.status]||'')+'</small></div><button class="sc-hb" id="scBk">INBOX</button></div><div class="sf">'+row('AGE',r.age)+row('STREAK',r.streak+' days')+row('WEEK OF',r.week)+row('REQUESTED',new Date(r.t).toLocaleString())+'<div class="sf-r"><span>REASON</span><b style="white-space:pre-wrap">'+esc(r.reason||'')+'</b></div><label>Note to user (optional)<input id="sfNote" maxlength="120"></label><button class="sup-go" id="rqY">APPROVE</button><button class="sup-go sm" id="rqN" style="margin-top:10px;background:#3a1218;color:#f0c9c9;border-color:#7a2a34">DECLINE</button>'+(r.status==='approved'?'<button class="sup-go sm" id="rqC" style="margin-top:10px">OPEN CHAT</button>':'')+'</div>';
- sup$('scBk').onclick=()=>inbox();
- const dec=async st=>{SFX.tap();try{await tx('reqSet',r.rm,{name:r.name,age:r.age,streak:r.streak,reason:r.reason,status:st,week:r.week,t:r.t,dt:Date.now(),note:sup$('sfNote').value.trim()});st==='approved'?SFX.fanfare():SFX.close();inbox()}catch(e){alert('Could not save decision.')}};
- sup$('rqY').onclick=()=>dec('approved');sup$('rqN').onclick=()=>dec('declined');
- const c=sup$('rqC');if(c)c.onclick=()=>chatView(r.rm,'s')}
-/* entry points */
-let taps=0,tapT=null;
-function superiorLogin(){
- if(isSup()){ac();SFX.tap();inbox();return}
- const p=prompt('Superior passcode');if(p===null)return;
- if(p===SUP.PASS){ss(SRK,'sup');ac();permAsk();SFX.fanfare();crownBtn();inbox()}else alert('Not recognised.')}
+/* crown */
+const isDay=()=>SUP_TEST||new Date().getDay()===SUP.DAY||!!(myReq&&myReq.status==='approved'&&myReq.wd===todayK());
+async function loadReq(){try{const r=await fb('GET','req/'+roomOf());myReq=r&&r.week===wk()?r:null}catch(e){}return myReq}
 async function crownTap(){
- ac();SFX.tap();if(isSup())return inbox();
- await loadReq();
+ ac();SFX.tap();await loadReq();
  if(!myReq)return formView();
- if(myReq.status==='pending')return msgView('pending');
- if(myReq.status==='declined')return msgView('declined',myReq.note);
- if(!openNow())return msgView('closed');
- msgView('approved',myReq.note)}
-async function loadReq(){try{const r=await tx('reqGet',roomOf());myReq=r&&r.week===wk()?r:null}catch(e){}return myReq}
+ if(myReq.status==='pending')return msgView('pending',myReq);
+ msgView(myReq.status,myReq)}
 function crownBtn(){
- const card=document.querySelector('#p-Home .royal-card');if(!card)return;
- let b=sup$('supCrown');if(!b){b=document.createElement('button');b.id='supCrown';b.type='button';b.onclick=crownTap;card.appendChild(b)}
- const show=isSup()||(sg(SUK)==='1'&&openNow());
- if(b.dataset.s!==String(show)+crownSrc().length){b.dataset.s=String(show)+crownSrc().length;b.innerHTML='<img src="'+crownSrc()+'" alt=""><b id="supBd" style="display:none"></b>'}
+ const h=document.querySelector('#p-Home .royal-card h2');if(!h)return;
+ let b=sup$('supCrown');if(!b){b=document.createElement('button');b.id='supCrown';b.type='button';b.onclick=crownTap;h.appendChild(b)}
+ const show=sg(SUK)==='1'&&isDay(),sig=String(show)+crownSrc().length;
+ if(b.dataset.s!==sig){b.dataset.s=sig;b.innerHTML='<img src="'+crownSrc()+'" alt="">'}
  b.style.display=show?'':'none'}
-/* unlock + background watchers */
-function unlockShow(){
- const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(30)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 LEGENDARY ACHIEVEMENT \u2726</div><div class="a2 gold-text">TALK WITH SUPERIOR</div><div class="a3">Seven days of unbroken discipline. Every Sunday, tap the crown on your Home screen and request a word with Superior himself.</div><button class="sup-go" id="scOk" style="max-width:280px;animation-delay:2.4s">ACCEPT THE HONOUR</button></div>';
- SFX.fanfare();permAsk();sup$('scOk').onclick=()=>supClose()}
+function unlockShow(){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(30)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 LEGENDARY ACHIEVEMENT \u2726</div><div class="a2 gold-text">TALK WITH SUPERIOR</div><div class="a3">Seven days of unbroken discipline. Every Sunday, tap the crown on your Home screen and request a word with Superior himself.</div><button class="sup-go" id="scOk" style="max-width:280px">ACCEPT THE HONOUR</button></div>';SFX.fanfare();permAsk();sup$('scOk').onclick=()=>supClose()}
+/* registry + notices from Superior */
+async function reg(){try{let n=0;try{n=curStreak()}catch(e){}await fb('PUT','users/'+roomOf(),{name:uname,streak:n,seen:Date.now(),unlocked:sg(SUK)==='1'})}catch(e){}}
+async function pullNotices(){
+ try{let nk=sg('supreme_sup_nk');const r=(await fb('GET','notices',undefined,'?orderBy="$key"'+(nk?'&startAt="'+nk+'"':'')))||{},ks=Object.keys(r).sort();
+  if(nk===null){ss('supreme_sup_nk',ks.length?ks[ks.length-1]:'-');return}
+  for(const k of ks){if(k<=nk)continue;nk=k;const n=r[k]||{},to=n.to==='all'?null:Object.values(n.to||{});
+   if(to&&to.indexOf(roomOf())<0)continue;
+   notify(n.title||'Notice from Superior',n.body||'');SFX.recv();
+   if(!ov)cardView('\u2726 NOTICE FROM SUPERIOR \u2726',esc(String(n.title||'NOTICE').toUpperCase()),esc(n.body||'').replace(/\n/g,'<br>'),'OK')}
+  ss('supreme_sup_nk',nk)}catch(e){}}
+/* heartbeat */
+let _tk=0;
 async function supTick(){
- try{if(sg(SUK)!=='1'&&uname&&curStreak()>=7){ss(SUK,'1');crownBtn();unlockShow()}}catch(e){}
- crownBtn();
- if(isSup()){try{const all=await tx('reqAll'),seen=JSON.parse(sg('supreme_sup_sseen')||'[]');let p=0;
-   Object.keys(all).forEach(k=>{const r=all[k];if(!r||r.status!=='pending')return;p++;const id=k+'|'+r.t;if(seen.indexOf(id)<0){seen.push(id);SFX.recv();notify('New request for Superior',(r.name||k)+' wants to talk with you.')}});
-   ss('supreme_sup_sseen',JSON.stringify(seen.slice(-200)));const bd=sup$('supBd');if(bd){bd.textContent=p;bd.style.display=p?'':'none'}}catch(e){}}
- else if(sg(SUK)==='1'&&uname){await loadReq();const r=myReq;
+ if(!uname)return;
+ if(SUP_TEST&&sg(SUK)!=='1')ss(SUK,'1');
+ try{if(sg(SUK)!=='1'&&curStreak()>=7){ss(SUK,'1');crownBtn();unlockShow()}}catch(e){}
+ if(_tk++%8===0)reg();
+ if(sg(SUK)==='1'){await loadReq();const r=myReq;
   if(r&&r.status!=='pending'){const id=r.week+r.status+(r.dt||0);if(sg('supreme_sup_seen')!==id){ss('supreme_sup_seen',id);
-   notify(r.status==='approved'?'Superior approved your request':'Superior replied',r.status==='approved'?'Tap the crown to enter.':'Open the app to read the decision.');
-   if(!ov){r.status==='approved'?SFX.fanfare():SFX.close();msgView(r.status,r.note)}}}}}
-(function(){const t=document.querySelector('.tb-title');if(t)t.addEventListener('click',()=>{if(isSup())return;taps++;clearTimeout(tapT);tapT=setTimeout(()=>taps=0,1500);if(taps>=5){taps=0;superiorLogin()}})})();
+   const win=r.from?'Active '+fmt12(r.from)+' to '+fmt12(r.to)+'. Be on time or lose your chance.':'';
+   notify(r.status==='approved'?'Superior approved your request':'Superior replied',r.status==='approved'?win:'Open the app to read the decision.');
+   if(!ov){r.status==='approved'?SFX.fanfare():SFX.close();msgView(r.status,r)}}}
+  if(r&&r.status==='approved'&&r.from&&r.wd){const id=r.wd+r.from+(r.dt||0);if(sg('supreme_sup_sch')!==id){ss('supreme_sup_sch',id);
+   const st=new Date(r.wd+'T'+r.from+':00'),a=new Date(st.getTime()-600000),nw=new Date();
+   if(a>nw)notify('Superior is active in 10 minutes','Be present at '+fmt12(r.from)+'. If you do not come, you lose the chance to talk with Superior.',a,5901);
+   if(st>nw)notify('Superior is waiting for you','The audience is open now until '+fmt12(r.to)+'. Enter now!',st,5902)}}}
+ crownBtn();
+ pullNotices()}
 supTick();setInterval(supTick,8000);
 </script>
 </body>
