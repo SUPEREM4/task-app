@@ -397,6 +397,26 @@ html,body{touch-action:pan-x pan-y}
 .tm-c{text-align:center;font-family:'Cinzel',serif;font-weight:700;font-size:1.25rem;letter-spacing:.35em;margin:6px 0 26px}
 .sf label.tm-ck{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:0;color:#d9cfae;display:flex;align-items:flex-start;gap:10px;line-height:1.3}
 .sf label.tm-ck input{display:inline-block;width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:#c9a85c}
+.sc-m{cursor:pointer}.sc-m.sel{outline:1px solid var(--gold-hi)}
+.rx{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--line);background:#0e0f14;overflow-x:auto;scrollbar-width:none}
+.rx button{flex:none;border:1px solid var(--line);background:rgba(0,0,0,.4);color:var(--gold);border-radius:18px;padding:6px 11px;font-size:1.2rem;cursor:pointer}
+.rx .rp{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.1em}
+.rpv{display:flex;align-items:center;gap:10px;padding:8px 14px;border-top:1px solid var(--line);background:#0e0f14;border-left:3px solid var(--gold)}
+.rpv div{flex:1;min-width:0;font-size:1rem;color:#cdbf9a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rpv b{display:block;font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:.12em;color:var(--gold)}
+.rpv button{background:none;border:0;color:var(--gold);font-size:1.1rem}
+.rq{background:rgba(0,0,0,.28);border-left:3px solid var(--gold);border-radius:8px;padding:5px 8px;margin-bottom:6px;font-size:.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rq b{display:block;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:.12em;opacity:.8}
+.rc{display:inline-block;margin-top:4px;background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:12px;padding:1px 8px;font-size:1rem;color:#f0e9dc;font-style:normal;white-space:pre}
+.sup-mid .sup-go.sm{padding:10px;font-size:.75rem;animation:fadeIn 1s 2.6s forwards;margin-top:10px}
+.eb{flex:none;border:0;background:none;font-size:1.5rem;padding:0 2px;cursor:pointer}
+.ep{position:absolute;left:0;right:0;bottom:calc(66px + env(safe-area-inset-bottom));height:44%;z-index:6;display:flex;flex-direction:column;background:#0e0f14;border-top:1px solid var(--gold);border-bottom:1px solid var(--line)}
+.ep-h{flex:none;display:flex;justify-content:space-between;align-items:center;padding:6px 14px;font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:var(--muted)}
+.ep-h button{background:none;border:0;color:var(--gold);font-size:1rem}
+.ep-g{flex:1;overflow-y:auto;display:grid;grid-template-columns:repeat(8,1fr);padding:0 6px 8px}
+.ep-k{grid-column:1/-1;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:var(--gold);padding:8px 6px 2px}
+.ep-g button{background:none;border:0;font-size:1.5rem;padding:5px 0;cursor:pointer}
+#supUpd{position:absolute;top:0;left:0;right:0;z-index:65;border:0;padding:calc(5px + env(safe-area-inset-top)) 10px 5px;background:linear-gradient(90deg,#8a6d2b,#f5e7c8,#8a6d2b);color:#1a1205;font:700 .6rem 'Cinzel',serif;letter-spacing:.18em;cursor:pointer}
 </style>
 </head>
 <body>
@@ -1294,6 +1314,8 @@ function tick(){const d=new Date();
 tick();setInterval(tick,1000);
 /* ===== SUPERIOR (user side): approval form -> terms -> approval with time -> timed chat + notices ===== */
 const SUP={DB:'https://supreme-12f47-default-rtdb.firebaseio.com',ROOT:'supchat',DAY:0};
+const APP_VER=13;
+const WA_LINK='https://whatsapp.com/channel/0029Vb9fWfZEVccRsWiEI83Y';
 const SUK='supreme_sup_unlock',SMK='supreme_sup_mute',SUP_TEST=false;
 const sg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let _ac=null;const muted=()=>sg(SMK)==='1';
@@ -1310,7 +1332,7 @@ const SFX={
  close:()=>tone(440,0,.5,'sine',.1,180)
 };
 const sup$=id=>document.getElementById(id),shell=document.querySelector('.app-shell');
-const roomOf=()=>String(uname||'guest').toLowerCase().replace(/[^a-z0-9]/g,'')||'guest';
+const roomOf=()=>{let u=sg('supreme_sup_uid');if(!u){u='u'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);ss('supreme_sup_uid',u)}return u};
 const todayK=(d=new Date())=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const wk=()=>{const d=new Date();d.setDate(d.getDate()-d.getDay());return todayK(d)};
 const mins=s=>{const p=String(s).split(':');return +p[0]*60+ +p[1]};
@@ -1327,9 +1349,9 @@ async function notify(t,b,at,id){try{const LN=PL.LocalNotifications;if(!(NATIVE&
 let ov=null,poll=null,CH=null,myReq=null;
 function crownSrc(){const c=document.querySelector('.lg-crown');return c?c.src:''}
 function ovMake(){supClose(true);ov=document.createElement('div');ov.className='sup-ov';shell.appendChild(ov);return ov}
-function supClose(q){clearInterval(poll);poll=null;CH=null;if(ov){ov.remove();ov=null;if(!q)SFX.close()}}
+function supClose(q){clearInterval(poll);poll=null;if(CH&&CH.stop)CH.stop();CH=null;if(ov){ov.remove();ov=null;if(!q)SFX.close()}}
 function sparks(n){let s='';for(let i=0;i<n;i++)s+='<i class="sup-sp" style="left:'+(Math.random()*100)+'%;animation-delay:'+(Math.random()*4)+'s"></i>';return s}
-function cardView(a1,a2,a3,btn,ok){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+a1+'</div><div class="a2 gold-text">'+a2+'</div><div class="a3">'+a3+'</div><button class="sup-go" id="scOk" style="max-width:280px">'+btn+'</button></div>';sup$('scOk').onclick=ok||(()=>supClose())}
+function cardView(a1,a2,a3,btn,ok,btn2,ok2){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+a1+'</div><div class="a2 gold-text">'+a2+'</div><div class="a3">'+a3+'</div><button class="sup-go" id="scOk" style="max-width:280px">'+btn+'</button>'+(btn2?'<button class="sup-go sm" id="scLt" style="max-width:280px">'+btn2+'</button>':'')+'</div>';sup$('scOk').onclick=ok||(()=>supClose());if(btn2)sup$('scLt').onclick=ok2||(()=>supClose())}
 function intro(cb,sub){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(22)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 AN AUDIENCE IS GRANTED \u2726</div><div class="a2 gold-text">SUPERIOR AWAITS</div><div class="a3">'+sub+'</div></div>';SFX.open();setTimeout(()=>{if(ov===o)cb()},3300)}
 /* approval window */
 function audState(r){if(!r||!r.from)return 'none';const n=new Date(),k=todayK(),m=n.getHours()*60+n.getMinutes();if(r.wd<k||(r.wd===k&&m>=mins(r.to)))return 'over';if(r.wd>k||m<mins(r.from))return 'wait';return 'now'}
@@ -1359,18 +1381,52 @@ async function termsView(d){
   const r={name:d.name,age:d.age,streak:d.streak,reason:d.reason,status:'pending',week:wk(),t:Date.now(),agreed:true};
   try{await fb('PUT','req/'+roomOf(),r);myReq=r;ss('supreme_sup_seen','');permAsk();SFX.send();msgView('pending',r)}catch(e){sup$('sfE').textContent='Could not send ('+String((e&&e.message)||e)+'). Tell Claude this code.';b.disabled=false;b.textContent='AGREE & SUBMIT'}}}
 /* chat (user side) */
-function lineHTML(m,mine){const d=new Date(m.t);return '<div class="sc-m '+(mine?'me':'them')+'">'+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+pad(d.getHours())+':'+pad(d.getMinutes())+'</small></div>'}
+const EMO=[['SMILEYS','😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😗 😙 😚 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 🤨 😐 😑 😶 😏 😒 🙄 😬 😔 😪 🤤 😴 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 😟 🙁 😮 😯 😲 😳 🥺 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 💩 🤡 👹 👺 👻 👽 🤖'],['GESTURES','👍 👎 👊 ✊ 🤛 🤜 👏 🙌 👐 🤲 🤝 🙏 ✌️ 🤞 🤟 🤘 👌 🤏 👈 👉 👆 👇 ☝️ ✋ 🤚 🖐️ 🖖 👋 🤙 💪 🖕 ✍️ 🤳 💅 👀 👁️ 👅 👄 🧠'],['HEARTS & SYMBOLS','❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣️ 💕 💞 💓 💗 💖 💘 💝 ✨ ⭐ 🌟 💫 🔥 💥 💯 ✅ ❌ ⚠️ 👑 💎 🏆 🥇 🎯 🎉 🎊 🎁 🔔 🙈 🙉 🙊 💤 💢 💬 💭'],['MORE','🌹 🌸 🌞 🌙 ⚡ ☀️ 🌈 ❄️ 🐯 🦁 🐺 🦅 🐍 🐉 🍕 🍔 🍟 🍿 ☕ 🍺 🎵 🎶 📚 💡 ⏰ 📱 💻 🚀 🚗 ⚽ 🏏 🏋️ 🧘 🕊️ ⚔️ 🛡️ 🗡️ 🏹 🔱 🎭']];
+function emoPick(host,cb,keep){const old=host.querySelector('.ep');if(old){old.remove();return}
+ const d=document.createElement('div');d.className='ep';
+ d.innerHTML='<div class="ep-h"><span>ALL EMOJI</span><button data-x="1">\u2715</button></div><div class="ep-g">'+EMO.map(c=>'<div class="ep-k">'+c[0]+'</div>'+c[1].split(' ').map(e=>'<button data-e="'+e+'">'+e+'</button>').join('')).join('')+'</div>';
+ d.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.e){cb(b.dataset.e);if(!keep)d.remove()}else d.remove()};
+ host.appendChild(d)}
+function fbStream(url,onObj){let es=null,cur={},dead=false;
+ const put=(t,k,v,merge)=>{if(merge){if(typeof t[k]!=='object'||!t[k])t[k]={};Object.keys(v||{}).forEach(x=>v[x]===null?delete t[k][x]:t[k][x]=v[x])}else if(v===null)delete t[k];else t[k]=v};
+ const apply=(p,data,merge)=>{const a=p.split('/').filter(Boolean);if(!a.length){if(merge)Object.keys(data||{}).forEach(x=>data[x]===null?delete cur[x]:cur[x]=data[x]);else cur=data||{};return}
+  let o=cur;for(let i=0;i<a.length-1;i++){if(typeof o[a[i]]!=='object'||!o[a[i]])o[a[i]]={};o=o[a[i]]}put(o,a[a.length-1],data,merge)};
+ const open=()=>{if(dead)return;try{es=new EventSource(url)}catch(e){return}
+  es.addEventListener('put',e=>{try{const d=JSON.parse(e.data);apply(d.path,d.data,false);onObj(cur)}catch(x){}});
+  es.addEventListener('patch',e=>{try{const d=JSON.parse(e.data);apply(d.path,d.data,true);onObj(cur)}catch(x){}});
+  es.onerror=()=>{if(es&&es.readyState===2&&!dead)setTimeout(open,3000)}};
+ open();return()=>{dead=true;try{es&&es.close()}catch(e){}}}
+const RXE=['\ud83d\udc4d','\u2764\ufe0f','\ud83d\ude02','\ud83d\ude2e','\ud83d\ude22','\ud83d\ude4f'];
+const rcHTML=r=>{r=r||{};const a={};['u','s'].forEach(x=>{if(r[x])a[r[x]]=(a[r[x]]||0)+1});const k=Object.keys(a);return k.length?'<span class="rc">'+k.map(e=>e+(a[e]>1?' '+a[e]:'')).join('  ')+'</span>':''};
+function lineHTML(k,m,mine){const d=new Date(m.t);return '<div class="sc-m '+(mine?'me':'them')+'" data-k="'+esc(k)+'">'+(m.rp?'<div class="rq" data-q="'+esc(m.rp.k||'')+'"><b>'+esc(m.rp.n||'')+'</b>'+esc(m.rp.x||'')+'</div>':'')+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+pad(d.getHours())+':'+pad(d.getMinutes())+'</small>'+rcHTML(m.r)+'</div>'}
 function chatView(rm){
- const o=ovMake(),until=myReq&&myReq.to?' \u00b7 UNTIL '+fmt12(myReq.to):'';
- o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR<small id="scSt">\u25cf LIVE'+until+'</small></div><button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">You are in the presence of Superior. Speak your mind.</div></div><div class="sc-in"><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
- const M=sup$('scM'),I=sup$('scI'),B=sup$('scS');CH={seen:{},last:'',first:true};
- const add=(k,m)=>{if(CH.seen[k])return;CH.seen[k]=1;if(k>CH.last)CH.last=k;const mine=m.f==='u';M.insertAdjacentHTML('beforeend',lineHTML(m,mine));M.scrollTop=M.scrollHeight;if(!mine&&!CH.first)SFX.recv()};
- const pull=async()=>{if(!CH)return;const st=sup$('scSt');try{const r=(await fb('GET','chat/'+rm,undefined,'?orderBy="$key"'+(CH.last?'&startAt="'+CH.last+'"':'')))||{};Object.keys(r).sort().forEach(k=>add(k,r[k]));CH.first=false;if(st){st.textContent='\u25cf LIVE'+until;st.style.color=''}}catch(e){if(st){st.textContent='\u25cb OFFLINE';st.style.color='#d96a6a'}}
-  if(audState(myReq)!=='now'&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Request again next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
- const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();try{const m={f:'u',n:uname,t:Date.now(),x:t};const r=await fb('POST','chat/'+rm,m);CH.first=true;add(r.name,m);CH.first=false}catch(e){I.value=t}};
+ const o=ovMake(),until=myReq&&myReq.to?' \u00b7 UNTIL '+fmt12(myReq.to):'',Q='?orderBy="$key"&limitToLast=100';
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR<small id="scSt">\u25cf LIVE'+until+'</small></div><button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">You are in the presence of Superior. Speak your mind.<br>Tap a message to react or reply.</div></div><div id="scRx"></div><div class="sc-in"><button class="eb" id="scE">\ud83d\ude0a</button><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
+ const M=sup$('scM'),I=sup$('scI'),B=sup$('scS'),R=sup$('scRx');CH={data:{},first:true,reply:null,sel:null};
+ const upd=k=>{const e=M.querySelector('[data-k="'+k+'"]');if(!e||!CH.data[k])return;const c=e.querySelector('.rc');if(c)c.remove();e.insertAdjacentHTML('beforeend',rcHTML(CH.data[k].r))};
+ const draw=()=>{M.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));let h='';
+  if(CH.sel){const e=M.querySelector('[data-k="'+CH.sel+'"]');if(e)e.classList.add('sel');h+='<div class="rx">'+RXE.map(x=>'<button data-e="'+x+'">'+x+'</button>').join('')+'<button data-a="more">\uff0b</button><button class="rp" data-a="reply">\u21a9 REPLY</button><button data-a="x">\u2715</button></div>'}
+  if(CH.reply)h+='<div class="rpv"><div><b>'+esc(CH.reply.n)+'</b>'+esc(CH.reply.x)+'</div><button data-a="clr">\u2715</button></div>';
+  R.innerHTML=h};
+ const addMsg=(k,m)=>{CH.data[k]=m;M.insertAdjacentHTML('beforeend',lineHTML(k,m,m.f==='u'));M.scrollTop=M.scrollHeight};
+ const sync=r=>{if(!CH||!r)return;Object.keys(r).sort().forEach(k=>{const m=r[k];if(!m||typeof m!=='object'||m.x===undefined)return;
+   if(!CH.data[k]){addMsg(k,m);if(m.f!=='u'&&!CH.first)SFX.recv()}
+   else if(JSON.stringify(CH.data[k].r||null)!==JSON.stringify(m.r||null)){const old=CH.data[k].r||{};CH.data[k].r=m.r;upd(k);if(m.r&&m.r.s&&m.r.s!==old.s)tone(1200,0,.1,'sine',.08)}});CH.first=false};
+ const tick=async()=>{if(!CH)return;const st=sup$('scSt');try{sync((await fb('GET','chat/'+rm,undefined,Q))||{});if(st){st.textContent='\u25cf LIVE'+until;st.style.color=''}}catch(e){if(st){st.textContent='\u25cb OFFLINE';st.style.color='#d96a6a'}}
+  if(CH&&audState(myReq)!=='now'&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Request again next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
+ const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();const m={f:'u',n:uname,t:Date.now(),x:t};if(CH.reply){m.rp=CH.reply;CH.reply=null;draw()}
+  try{const r=await fb('POST','chat/'+rm,m);if(CH&&!CH.data[r.name])addMsg(r.name,m)}catch(e){I.value=t}};
+ const react=async(k,e)=>{const m=CH.data[k];if(!m)return;m.r=m.r||{};CH.sel=null;draw();
+  try{if(m.r.u===e){delete m.r.u;upd(k);await fb('DELETE','chat/'+rm+'/'+k+'/r/u')}else{m.r.u=e;upd(k);await fb('PUT','chat/'+rm+'/'+k+'/r/u',e)}}catch(x){}};
+ M.onclick=e=>{const q=e.target.closest('.rq');if(q){const t=M.querySelector('[data-k="'+q.dataset.q+'"]');if(t){t.scrollIntoView({block:'center',behavior:'smooth'});t.classList.add('sel');setTimeout(()=>t.classList.remove('sel'),1200)}return}
+  const b=e.target.closest('.sc-m[data-k]');if(!b)return;SFX.tap();CH.sel=CH.sel===b.dataset.k?null:b.dataset.k;draw()};
+ R.onclick=e=>{const x=e.target.closest('button');if(!x)return;SFX.tap();if(x.dataset.e)return react(CH.sel,x.dataset.e);
+  const a=x.dataset.a;if(a==='more')emoPick(o,em=>react(CH.sel,em));else if(a==='reply'){const m=CH.data[CH.sel];if(m)CH.reply={k:CH.sel,n:m.n||'',x:String(m.x).slice(0,80)};CH.sel=null;draw();I.focus()}else if(a==='x'){CH.sel=null;draw()}else if(a==='clr'){CH.reply=null;draw()}};
+ sup$('scE').onclick=()=>{SFX.tap();emoPick(o,em=>{I.value+=em},true)};
  B.onclick=send;I.onkeydown=e=>{if(e.key==='Enter')send();else if(e.key.length===1&&Math.random()<.35)tone(900+Math.random()*300,0,.03,'square',.02)};
  sup$('scX').onclick=()=>supClose();sup$('scMu').onclick=e=>{ss(SMK,muted()?'0':'1');e.target.textContent=muted()?'\ud83d\udd07':'\ud83d\udd0a';SFX.tap()};
- pull();poll=setInterval(pull,2500);setTimeout(()=>I.focus(),300)}
+ CH.stop=fbStream(SUP.DB+'/'+SUP.ROOT+'/chat/'+rm+'.json'+Q,sync);
+ tick();poll=setInterval(tick,4000);setTimeout(()=>I.focus(),300)}
 /* crown */
 const isDay=()=>SUP_TEST||new Date().getDay()===SUP.DAY||!!(myReq&&myReq.status==='approved'&&myReq.wd===todayK());
 async function loadReq(){try{const r=await fb('GET','req/'+roomOf());myReq=r&&r.week===wk()?r:null}catch(e){}return myReq}
@@ -1387,7 +1443,7 @@ function crownBtn(){
  b.style.display=show?'':'none'}
 function unlockShow(){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(30)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 LEGENDARY ACHIEVEMENT \u2726</div><div class="a2 gold-text">TALK WITH SUPERIOR</div><div class="a3">Seven days of unbroken discipline. Every Sunday, tap the crown on your Home screen and request a word with Superior himself.</div><button class="sup-go" id="scOk" style="max-width:280px">ACCEPT THE HONOUR</button></div>';SFX.fanfare();permAsk();sup$('scOk').onclick=()=>supClose()}
 /* registry + notices from Superior */
-async function reg(){try{let n=0;try{n=curStreak()}catch(e){}await fb('PUT','users/'+roomOf(),{name:uname,streak:n,seen:Date.now(),unlocked:sg(SUK)==='1'})}catch(e){}}
+async function reg(){try{let n=0;try{n=curStreak()}catch(e){}await fb('PUT','users/'+roomOf(),{name:uname,streak:n,seen:Date.now(),unlocked:sg(SUK)==='1',v:APP_VER})}catch(e){}}
 async function pullNotices(){
  try{let nk=sg('supreme_sup_nk');const r=(await fb('GET','notices',undefined,'?orderBy="$key"'+(nk?'&startAt="'+nk+'"':'')))||{},ks=Object.keys(r).sort();
   if(nk===null){ss('supreme_sup_nk',ks.length?ks[ks.length-1]:'-');return}
@@ -1396,13 +1452,28 @@ async function pullNotices(){
    notify(n.title||'Notice from Superior',n.body||'');SFX.recv();
    if(!ov)cardView('\u2726 NOTICE FROM SUPERIOR \u2726',esc(String(n.title||'NOTICE').toUpperCase()),esc(n.body||'').replace(/\n/g,'<br>'),'OK')}
   ss('supreme_sup_nk',nk)}catch(e){}}
+/* data sync to host */
+const SYNCK=['supreme_tasks_v1','supreme_hist_v1','supreme_diary_v1','supreme_sleep_v1','supreme_tt_v1','supreme_rules_v1','supreme_ach_v1'];
+let _lastS='',_lp=0;
+async function pushData(){_lp=Date.now();try{const d={};SYNCK.forEach(k=>{const v=sg(k);if(v!==null)d[k]=v});const s=JSON.stringify(d);if(s===_lastS)return;await fb('PUT','data/'+roomOf(),{t:Date.now(),name:uname,d:d});_lastS=s}catch(e){}}
+async function applyRename(){try{const nn=await fb('GET','ren/'+roomOf());if(nn&&typeof nn==='string'&&nn!==uname){uname=nn;try{localStorage.setItem('supreme_user_v5',nn)}catch(e){}try{applyName()}catch(e){}try{renderTasks()}catch(e){}reg()}}catch(e){}}
+/* update notice */
+let UPD=null,_updShown=false;
+function openUrl(u){try{if(!/^https?:\/\//i.test(u))return;if(PL.Browser&&PL.Browser.open){PL.Browser.open({url:u});return}const a=document.createElement('a');a.href=u;a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}catch(e){}}
+function updBanner(){let b=sup$('supUpd');if(!UPD){if(b)b.remove();return}if(!b){b=document.createElement('button');b.id='supUpd';b.type='button';b.onclick=()=>openUrl(UPD.link);shell.appendChild(b)}b.textContent='\u2726 UPDATE AVAILABLE \u00b7 TAP TO UPDATE \u2726'}
+function updShow(){if(!UPD||ov)return;cardView('\u2726 UPDATE AVAILABLE \u2726','NEW VERSION',esc(UPD.msg||'A new version of the app is ready.').replace(/\n/g,'<br>'),'UPDATE NOW',()=>{openUrl(UPD.link);supClose()},'LATER',()=>supClose())}
+async function checkUpd(){try{const u=await fb('GET','cfg/update');
+ if(u&&+u.ver>APP_VER){u.link=/^https?:\/\//i.test(u.link||'')?u.link:WA_LINK;UPD=u;updBanner();if(sg('supreme_sup_updseen')!==String(u.ver)){ss('supreme_sup_updseen',String(u.ver));notify('Update available',u.msg||'A new version is ready.');SFX.recv()}if(!_updShown&&!ov){_updShown=true;updShow()}}
+ else{UPD=null;updBanner()}}catch(e){}}
 /* heartbeat */
 let _tk=0;
 async function supTick(){
- if(!uname)return;
+ if(!uname)return;const n=_tk++;
  if(SUP_TEST&&sg(SUK)!=='1')ss(SUK,'1');
  try{if(sg(SUK)!=='1'&&curStreak()>=7){ss(SUK,'1');crownBtn();unlockShow()}}catch(e){}
- if(_tk++%8===0)reg();
+ if(n%8===0)reg();
+ if(Date.now()-_lp>20000)pushData();
+ if(n%4===0){checkUpd();applyRename()}
  if(sg(SUK)==='1'){await loadReq();const r=myReq;
   if(r&&r.status!=='pending'){const id=r.week+r.status+(r.dt||0);if(sg('supreme_sup_seen')!==id){ss('supreme_sup_seen',id);
    const win=r.from?'Active '+fmt12(r.from)+' to '+fmt12(r.to)+'. Be on time or lose your chance.':'';
