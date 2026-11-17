@@ -417,6 +417,8 @@ html,body{touch-action:pan-x pan-y}
 .ep-k{grid-column:1/-1;font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.2em;color:var(--gold);padding:8px 6px 2px}
 .ep-g button{background:none;border:0;font-size:1.5rem;padding:5px 0;cursor:pointer}
 #supUpd{position:absolute;top:0;left:0;right:0;z-index:65;border:0;padding:calc(5px + env(safe-area-inset-top)) 10px 5px;background:linear-gradient(90deg,#8a6d2b,#f5e7c8,#8a6d2b);color:#1a1205;font:700 .6rem 'Cinzel',serif;letter-spacing:.18em;cursor:pointer}
+.sup-ov{position:fixed;left:0;right:0;top:0;bottom:auto;height:100dvh;max-width:520px;margin:0 auto;z-index:9000}
+html.sup-lock,html.sup-lock body{overflow:hidden!important;overscroll-behavior:none}
 </style>
 </head>
 <body>
@@ -1348,8 +1350,9 @@ async function notify(t,b,at,id){try{const LN=PL.LocalNotifications;if(!(NATIVE&
 /* overlays */
 let ov=null,poll=null,CH=null,myReq=null;
 function crownSrc(){const c=document.querySelector('.lg-crown');return c?c.src:''}
-function ovMake(){supClose(true);ov=document.createElement('div');ov.className='sup-ov';shell.appendChild(ov);return ov}
-function supClose(q){clearInterval(poll);poll=null;if(CH&&CH.stop)CH.stop();CH=null;if(ov){ov.remove();ov=null;if(!q)SFX.close()}}
+function fitVV(el){const vv=window.visualViewport;if(!vv)return()=>{};const f=()=>{el.style.top=vv.offsetTop+'px';el.style.height=vv.height+'px';if(window.scrollY)window.scrollTo(0,0)};vv.addEventListener('resize',f);vv.addEventListener('scroll',f);f();return()=>{vv.removeEventListener('resize',f);vv.removeEventListener('scroll',f)}}
+function ovMake(){supClose(true);ov=document.createElement('div');ov.className='sup-ov';document.body.appendChild(ov);ov._fit=fitVV(ov);document.documentElement.classList.add('sup-lock');return ov}
+function supClose(q){clearInterval(poll);poll=null;if(CH&&CH.stop)CH.stop();CH=null;if(ov){if(ov._fit)ov._fit();ov.remove();ov=null;document.documentElement.classList.remove('sup-lock');if(!q)SFX.close()}}
 function sparks(n){let s='';for(let i=0;i<n;i++)s+='<i class="sup-sp" style="left:'+(Math.random()*100)+'%;animation-delay:'+(Math.random()*4)+'s"></i>';return s}
 function cardView(a1,a2,a3,btn,ok,btn2,ok2){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(18)+'<img src="'+crownSrc()+'" alt=""><div class="a1">'+a1+'</div><div class="a2 gold-text">'+a2+'</div><div class="a3">'+a3+'</div><button class="sup-go" id="scOk" style="max-width:280px">'+btn+'</button>'+(btn2?'<button class="sup-go sm" id="scLt" style="max-width:280px">'+btn2+'</button>':'')+'</div>';sup$('scOk').onclick=ok||(()=>supClose());if(btn2)sup$('scLt').onclick=ok2||(()=>supClose())}
 function intro(cb,sub){const o=ovMake();o.innerHTML='<div class="sup-mid">'+sparks(22)+'<img src="'+crownSrc()+'" alt=""><div class="a1">\u2726 AN AUDIENCE IS GRANTED \u2726</div><div class="a2 gold-text">SUPERIOR AWAITS</div><div class="a3">'+sub+'</div></div>';SFX.open();setTimeout(()=>{if(ov===o)cb()},3300)}
