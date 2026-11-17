@@ -419,6 +419,17 @@ html,body{touch-action:pan-x pan-y}
 #supUpd{position:absolute;top:0;left:0;right:0;z-index:65;border:0;padding:calc(5px + env(safe-area-inset-top)) 10px 5px;background:linear-gradient(90deg,#8a6d2b,#f5e7c8,#8a6d2b);color:#1a1205;font:700 .6rem 'Cinzel',serif;letter-spacing:.18em;cursor:pointer}
 .sup-ov{position:fixed;left:0;right:0;top:0;bottom:auto;height:100dvh;max-width:520px;margin:0 auto;z-index:9000}
 html.sup-lock,html.sup-lock body{overflow:hidden!important;overscroll-behavior:none}
+.sc-m{position:relative;touch-action:pan-y;-webkit-user-select:none;user-select:none;cursor:default}
+.sc-msgs{overflow-x:hidden}
+.sc-m.hr{margin-bottom:14px}
+.sc-m .rc{position:absolute;bottom:-13px;margin:0}
+.sc-m.me .rc{right:10px}.sc-m.them .rc{left:10px}
+.sc-m::before{content:'\21a9';position:absolute;left:-44px;top:50%;margin-top:-15px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(201,168,92,.22);color:var(--gold);opacity:0;transition:opacity .1s}
+.sc-m.sw::before{opacity:.6}.sc-m.rdy::before{opacity:1;background:var(--gold);color:#150f04}
+.mn-bk{position:absolute;left:0;right:0;top:0;bottom:0;z-index:20;background:rgba(0,0,0,.35)}
+.mn{position:absolute;background:#1a1710;border:1px solid var(--gold);border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.6);overflow:hidden}
+.mn-e{display:flex;gap:2px;padding:6px 8px}.mn-e button{background:none;border:0;font-size:1.6rem;padding:2px 6px;color:var(--gold)}
+.mn-a{display:flex;border-top:1px solid var(--line)}.mn-a button{flex:1;background:none;border:0;color:var(--gold-hi);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;padding:11px 14px}
 </style>
 </head>
 <body>
@@ -1370,9 +1381,9 @@ const DEF_T={rules:['Respect Superior.',"Don't use bad language.","Don't raise y
 function head(t,s,back){return '<div class="sc-head">'+(back?'<button class="sc-hb" id="scBk">\u2039</button>':'')+'<img src="'+crownSrc()+'" alt=""><div class="who">'+t+'<small style="color:var(--muted)">'+s+'</small></div><button class="sc-hb" id="scX">CLOSE</button></div>'}
 function formView(d){
  d=d||{};let n=0;try{n=curStreak()}catch(e){}
- const o=ovMake();o.innerHTML=head('APPROVAL FORM','TALK WITH SUPERIOR')+'<div class="sf"><label>Name<input id="sfN" maxlength="30" value="'+esc(d.name||uname||'')+'"></label><label>Age<input id="sfA" type="number" inputmode="numeric" min="5" max="99" value="'+esc(d.age||'')+'"></label><label>Current streak<input id="sfS" value="'+n+' days" readonly></label><label>Reason to talk with Superior<textarea id="sfR" maxlength="400" rows="5" placeholder="Why do you want to speak with Superior?">'+esc(d.reason||'')+'</textarea></label><div class="sf-e" id="sfE"></div><button class="sup-go" id="sfGo">CONTINUE</button></div>';
+ const o=ovMake();o.innerHTML=head('APPROVAL FORM','TALK WITH SUPERIOR')+'<div class="sf"><label>Name<input id="sfN" maxlength="30" value="'+esc(d.name||uname||'')+'"></label><label>Current streak<input id="sfS" value="'+n+' days" readonly></label><label>Reason to talk with Superior<textarea id="sfR" maxlength="400" rows="5" placeholder="Why do you want to speak with Superior?">'+esc(d.reason||'')+'</textarea></label><div class="sf-e" id="sfE"></div><button class="sup-go" id="sfGo">CONTINUE</button></div>';
  sup$('scX').onclick=()=>supClose();
- sup$('sfGo').onclick=()=>{const nm=sup$('sfN').value.trim(),ag=sup$('sfA').value.trim(),rs=sup$('sfR').value.trim();if(!nm||!ag||!rs){sup$('sfE').textContent='Please fill every field.';return}SFX.tap();termsView({name:nm,age:+ag,streak:n,reason:rs})}}
+ sup$('sfGo').onclick=()=>{const nm=sup$('sfN').value.trim(),rs=sup$('sfR').value.trim();if(!nm||!rs){sup$('sfE').textContent='Please fill every field.';return}SFX.tap();termsView({name:nm,streak:n,reason:rs})}}
 async function termsView(d){
  const o=ovMake();o.innerHTML=head('TERMS & CONDITIONS','READ CAREFULLY')+'<div class="sf"><div class="sc-m sys">Loading...</div></div>';sup$('scX').onclick=()=>supClose();
  let T=DEF_T;try{const t=await fb('GET','cfg/terms');if(t&&t.rules)T={rules:Object.values(t.rules).filter(Boolean),closing:t.closing||'HAIL SUPERIOR'}}catch(e){}
@@ -1381,15 +1392,9 @@ async function termsView(d){
  sup$('scX').onclick=()=>supClose();sup$('scBk').onclick=()=>formView(d);
  sup$('tmCk').onchange=e=>{sup$('tmGo').disabled=!e.target.checked};
  sup$('tmGo').onclick=async()=>{const b=sup$('tmGo');b.disabled=true;b.textContent='SENDING...';
-  const r={name:d.name,age:d.age,streak:d.streak,reason:d.reason,status:'pending',week:wk(),t:Date.now(),agreed:true};
+  const r={name:d.name,streak:d.streak,reason:d.reason,status:'pending',week:wk(),t:Date.now(),agreed:true};
   try{await fb('PUT','req/'+roomOf(),r);myReq=r;ss('supreme_sup_seen','');permAsk();SFX.send();msgView('pending',r)}catch(e){sup$('sfE').textContent='Could not send ('+String((e&&e.message)||e)+'). Tell Claude this code.';b.disabled=false;b.textContent='AGREE & SUBMIT'}}}
 /* chat (user side) */
-const EMO=[['SMILEYS','😀 😃 😄 😁 😆 😅 😂 🤣 😊 😇 🙂 🙃 😉 😌 😍 🥰 😘 😗 😙 😚 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 🤨 😐 😑 😶 😏 😒 🙄 😬 😔 😪 🤤 😴 😷 🤒 🤕 🤢 🤮 🤧 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 😟 🙁 😮 😯 😲 😳 🥺 😦 😧 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 💩 🤡 👹 👺 👻 👽 🤖'],['GESTURES','👍 👎 👊 ✊ 🤛 🤜 👏 🙌 👐 🤲 🤝 🙏 ✌️ 🤞 🤟 🤘 👌 🤏 👈 👉 👆 👇 ☝️ ✋ 🤚 🖐️ 🖖 👋 🤙 💪 🖕 ✍️ 🤳 💅 👀 👁️ 👅 👄 🧠'],['HEARTS & SYMBOLS','❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣️ 💕 💞 💓 💗 💖 💘 💝 ✨ ⭐ 🌟 💫 🔥 💥 💯 ✅ ❌ ⚠️ 👑 💎 🏆 🥇 🎯 🎉 🎊 🎁 🔔 🙈 🙉 🙊 💤 💢 💬 💭'],['MORE','🌹 🌸 🌞 🌙 ⚡ ☀️ 🌈 ❄️ 🐯 🦁 🐺 🦅 🐍 🐉 🍕 🍔 🍟 🍿 ☕ 🍺 🎵 🎶 📚 💡 ⏰ 📱 💻 🚀 🚗 ⚽ 🏏 🏋️ 🧘 🕊️ ⚔️ 🛡️ 🗡️ 🏹 🔱 🎭']];
-function emoPick(host,cb,keep){const old=host.querySelector('.ep');if(old){old.remove();return}
- const d=document.createElement('div');d.className='ep';
- d.innerHTML='<div class="ep-h"><span>ALL EMOJI</span><button data-x="1">\u2715</button></div><div class="ep-g">'+EMO.map(c=>'<div class="ep-k">'+c[0]+'</div>'+c[1].split(' ').map(e=>'<button data-e="'+e+'">'+e+'</button>').join('')).join('')+'</div>';
- d.onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.e){cb(b.dataset.e);if(!keep)d.remove()}else d.remove()};
- host.appendChild(d)}
 function fbStream(url,onObj){let es=null,cur={},dead=false;
  const put=(t,k,v,merge)=>{if(merge){if(typeof t[k]!=='object'||!t[k])t[k]={};Object.keys(v||{}).forEach(x=>v[x]===null?delete t[k][x]:t[k][x]=v[x])}else if(v===null)delete t[k];else t[k]=v};
  const apply=(p,data,merge)=>{const a=p.split('/').filter(Boolean);if(!a.length){if(merge)Object.keys(data||{}).forEach(x=>data[x]===null?delete cur[x]:cur[x]=data[x]);else cur=data||{};return}
@@ -1399,34 +1404,45 @@ function fbStream(url,onObj){let es=null,cur={},dead=false;
   es.addEventListener('patch',e=>{try{const d=JSON.parse(e.data);apply(d.path,d.data,true);onObj(cur)}catch(x){}});
   es.onerror=()=>{if(es&&es.readyState===2&&!dead)setTimeout(open,3000)}};
  open();return()=>{dead=true;try{es&&es.close()}catch(e){}}}
-const RXE=['\ud83d\udc4d','\u2764\ufe0f','\ud83d\ude02','\ud83d\ude2e','\ud83d\ude22','\ud83d\ude4f'];
-const rcHTML=r=>{r=r||{};const a={};['u','s'].forEach(x=>{if(r[x])a[r[x]]=(a[r[x]]||0)+1});const k=Object.keys(a);return k.length?'<span class="rc">'+k.map(e=>e+(a[e]>1?' '+a[e]:'')).join('  ')+'</span>':''};
-function lineHTML(k,m,mine){const d=new Date(m.t);return '<div class="sc-m '+(mine?'me':'them')+'" data-k="'+esc(k)+'">'+(m.rp?'<div class="rq" data-q="'+esc(m.rp.k||'')+'"><b>'+esc(m.rp.n||'')+'</b>'+esc(m.rp.x||'')+'</div>':'')+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+pad(d.getHours())+':'+pad(d.getMinutes())+'</small>'+rcHTML(m.r)+'</div>'}
+function msgGestures(M,sel,cb){
+ let sx=0,sy=0,el=null,dx=0,lp=null,moved=false,sw=false,lastTap=0,lastEl=null;
+ const v=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
+ M.addEventListener('touchstart',e=>{const b=e.target.closest(sel);if(!b||e.touches.length!==1)return;el=b;sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;moved=false;sw=false;clearTimeout(lp);lp=setTimeout(()=>{if(!moved&&el){const x=el;el=null;cb.hold(x)}},450)},{passive:true});
+ M.addEventListener('touchmove',e=>{if(!el)return;const t=e.touches[0],x=t.clientX-sx,y=t.clientY-sy;
+  if(!sw&&Math.abs(y)>10){moved=true;clearTimeout(lp);el=null;return}
+  if(x>12&&Math.abs(x)>Math.abs(y)){if(!sw){sw=true;moved=true;clearTimeout(lp);el.classList.add('sw');el.style.transition='none'}const was=dx>=60;dx=Math.min(x,70);el.style.transform='translateX('+dx+'px)';el.classList.toggle('rdy',dx>=60);if(dx>=60&&!was)v(15)}},{passive:true});
+ M.addEventListener('touchend',()=>{clearTimeout(lp);if(!el)return;const b=el;el=null;
+  if(sw){b.style.transition='transform .18s';b.style.transform='';b.classList.remove('sw','rdy');if(dx>=60)cb.reply(b);return}
+  if(moved)return;const n=Date.now();if(lastEl===b&&n-lastTap<320){lastTap=0;cb.dbl&&cb.dbl(b)}else{lastTap=n;lastEl=b}});
+ M.addEventListener('touchcancel',()=>{clearTimeout(lp);if(el){el.style.transform='';el.classList.remove('sw','rdy');el=null}});
+ M.addEventListener('contextmenu',e=>{const b=e.target.closest(sel);if(b){e.preventDefault();cb.hold(b)}})}
+function msgMenu(o,b,mine,cb){
+ const old=o.querySelector('.mn-bk');if(old)old.remove();
+ const bk=document.createElement('div'),m=document.createElement('div');bk.className='mn-bk';m.className='mn';
+ m.innerHTML='<div class="mn-a"><button data-a="reply">\u21a9 REPLY</button><button data-a="copy">COPY</button></div>';
+ const r=b.getBoundingClientRect(),or=o.getBoundingClientRect();let top=r.top-or.top-52;if(top<70)top=r.bottom-or.top+8;
+ m.style.top=Math.max(70,Math.min(top,or.height-100))+'px';if(mine)m.style.right='10px';else m.style.left='10px';
+ bk.appendChild(m);o.appendChild(bk);
+ bk.onclick=e=>{const x=e.target.closest('button');bk.remove();cb(x?{a:x.dataset.a}:null)}}
+function lineHTML(k,m,mine){const d=new Date(m.t);return '<div class="sc-m '+(mine?'me':'them')+'" data-k="'+esc(k)+'">'+(m.rp?'<div class="rq" data-q="'+esc(m.rp.k||'')+'"><b>'+esc(m.rp.n||'')+'</b>'+esc(m.rp.x||'')+'</div>':'')+esc(m.x)+'<small>'+esc(m.n||'')+' \u00b7 '+pad(d.getHours())+':'+pad(d.getMinutes())+'</small></div>'}
 function chatView(rm){
  const o=ovMake(),until=myReq&&myReq.to?' \u00b7 UNTIL '+fmt12(myReq.to):'',Q='?orderBy="$key"&limitToLast=100';
- o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR<small id="scSt">\u25cf LIVE'+until+'</small></div><button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">You are in the presence of Superior. Speak your mind.<br>Tap a message to react or reply.</div></div><div id="scRx"></div><div class="sc-in"><button class="eb" id="scE">\ud83d\ude0a</button><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
- const M=sup$('scM'),I=sup$('scI'),B=sup$('scS'),R=sup$('scRx');CH={data:{},first:true,reply:null,sel:null};
- const upd=k=>{const e=M.querySelector('[data-k="'+k+'"]');if(!e||!CH.data[k])return;const c=e.querySelector('.rc');if(c)c.remove();e.insertAdjacentHTML('beforeend',rcHTML(CH.data[k].r))};
- const draw=()=>{M.querySelectorAll('.sel').forEach(x=>x.classList.remove('sel'));let h='';
-  if(CH.sel){const e=M.querySelector('[data-k="'+CH.sel+'"]');if(e)e.classList.add('sel');h+='<div class="rx">'+RXE.map(x=>'<button data-e="'+x+'">'+x+'</button>').join('')+'<button data-a="more">\uff0b</button><button class="rp" data-a="reply">\u21a9 REPLY</button><button data-a="x">\u2715</button></div>'}
-  if(CH.reply)h+='<div class="rpv"><div><b>'+esc(CH.reply.n)+'</b>'+esc(CH.reply.x)+'</div><button data-a="clr">\u2715</button></div>';
-  R.innerHTML=h};
+ o.innerHTML='<div class="sc-head"><img src="'+crownSrc()+'" alt=""><div class="who">SUPERIOR<small id="scSt">\u25cf LIVE'+until+'</small></div><button class="sc-hb" id="scMu">'+(muted()?'\ud83d\udd07':'\ud83d\udd0a')+'</button><button class="sc-hb" id="scX">LEAVE</button></div><div class="sc-msgs" id="scM"><div class="sc-m sys">You are in the presence of Superior. Speak your mind.</div></div><div id="scRx"></div><div class="sc-in"><input id="scI" maxlength="500" placeholder="Write a message..." autocomplete="off"><button id="scS">\u27a4</button></div>';
+ const M=sup$('scM'),I=sup$('scI'),B=sup$('scS'),R=sup$('scRx');CH={data:{},first:true,reply:null};
+ const draw=()=>{R.innerHTML=CH.reply?'<div class="rpv"><div><b>'+esc(CH.reply.n)+'</b>'+esc(CH.reply.x)+'</div><button data-a="clr">\u2715</button></div>':''};
  const addMsg=(k,m)=>{CH.data[k]=m;M.insertAdjacentHTML('beforeend',lineHTML(k,m,m.f==='u'));M.scrollTop=M.scrollHeight};
- const sync=r=>{if(!CH||!r)return;Object.keys(r).sort().forEach(k=>{const m=r[k];if(!m||typeof m!=='object'||m.x===undefined)return;
-   if(!CH.data[k]){addMsg(k,m);if(m.f!=='u'&&!CH.first)SFX.recv()}
-   else if(JSON.stringify(CH.data[k].r||null)!==JSON.stringify(m.r||null)){const old=CH.data[k].r||{};CH.data[k].r=m.r;upd(k);if(m.r&&m.r.s&&m.r.s!==old.s)tone(1200,0,.1,'sine',.08)}});CH.first=false};
+ const sync=r=>{if(!CH||!r)return;Object.keys(r).sort().forEach(k=>{const m=r[k];if(!m||typeof m!=='object'||m.x===undefined)return;if(!CH.data[k]){addMsg(k,m);if(m.f!=='u'&&!CH.first)SFX.recv()}});CH.first=false};
  const tick=async()=>{if(!CH)return;const st=sup$('scSt');try{sync((await fb('GET','chat/'+rm,undefined,Q))||{});if(st){st.textContent='\u25cf LIVE'+until;st.style.color=''}}catch(e){if(st){st.textContent='\u25cb OFFLINE';st.style.color='#d96a6a'}}
   if(CH&&audState(myReq)!=='now'&&!sup$('scEnd')){M.insertAdjacentHTML('beforeend','<div class="sc-m sys" id="scEnd">The audience has ended. Request again next Sunday.</div>');I.disabled=B.disabled=true;SFX.close()}};
- const send=async()=>{const t=I.value.trim();if(!t||I.disabled)return;I.value='';SFX.send();const m={f:'u',n:uname,t:Date.now(),x:t};if(CH.reply){m.rp=CH.reply;CH.reply=null;draw()}
+ const send=async()=>{const t=I.value.trim();I.focus();if(!t||I.disabled)return;I.value='';SFX.send();const m={f:'u',n:uname,t:Date.now(),x:t};if(CH.reply){m.rp=CH.reply;CH.reply=null;draw()}
   try{const r=await fb('POST','chat/'+rm,m);if(CH&&!CH.data[r.name])addMsg(r.name,m)}catch(e){I.value=t}};
- const react=async(k,e)=>{const m=CH.data[k];if(!m)return;m.r=m.r||{};CH.sel=null;draw();
-  try{if(m.r.u===e){delete m.r.u;upd(k);await fb('DELETE','chat/'+rm+'/'+k+'/r/u')}else{m.r.u=e;upd(k);await fb('PUT','chat/'+rm+'/'+k+'/r/u',e)}}catch(x){}};
- M.onclick=e=>{const q=e.target.closest('.rq');if(q){const t=M.querySelector('[data-k="'+q.dataset.q+'"]');if(t){t.scrollIntoView({block:'center',behavior:'smooth'});t.classList.add('sel');setTimeout(()=>t.classList.remove('sel'),1200)}return}
-  const b=e.target.closest('.sc-m[data-k]');if(!b)return;SFX.tap();CH.sel=CH.sel===b.dataset.k?null:b.dataset.k;draw()};
- R.onclick=e=>{const x=e.target.closest('button');if(!x)return;SFX.tap();if(x.dataset.e)return react(CH.sel,x.dataset.e);
-  const a=x.dataset.a;if(a==='more')emoPick(o,em=>react(CH.sel,em));else if(a==='reply'){const m=CH.data[CH.sel];if(m)CH.reply={k:CH.sel,n:m.n||'',x:String(m.x).slice(0,80)};CH.sel=null;draw();I.focus()}else if(a==='x'){CH.sel=null;draw()}else if(a==='clr'){CH.reply=null;draw()}};
- sup$('scE').onclick=()=>{SFX.tap();emoPick(o,em=>{I.value+=em},true)};
- B.onclick=send;I.onkeydown=e=>{if(e.key==='Enter')send();else if(e.key.length===1&&Math.random()<.35)tone(900+Math.random()*300,0,.03,'square',.02)};
+ const doReply=k=>{const m=CH.data[k];if(!m)return;CH.reply={k:k,n:m.n||'',x:String(m.x).slice(0,80)};draw();I.focus()};
+ msgGestures(M,'.sc-m[data-k]',{reply:b=>doReply(b.dataset.k),hold:b=>{SFX.tap();vib(15);b.classList.add('sel');
+  msgMenu(o,b,b.classList.contains('me'),x=>{b.classList.remove('sel');if(!x)return;const k=b.dataset.k;if(x.a==='reply')doReply(k);else if(x.a==='copy'){try{navigator.clipboard.writeText(CH.data[k].x)}catch(e){}}})}});
+ M.onclick=e=>{const q=e.target.closest('.rq');if(!q)return;const t=M.querySelector('[data-k="'+q.dataset.q+'"]');if(t){t.scrollIntoView({block:'center',behavior:'smooth'});t.classList.add('sel');setTimeout(()=>t.classList.remove('sel'),1200)}};
+ R.onclick=e=>{if(e.target.closest('[data-a="clr"]')){CH.reply=null;draw()}};
+ B.addEventListener('mousedown',e=>e.preventDefault());B.onclick=send;
+ I.onkeydown=e=>{if(e.key==='Enter')send();else if(e.key.length===1&&Math.random()<.35)tone(900+Math.random()*300,0,.03,'square',.02)};
  sup$('scX').onclick=()=>supClose();sup$('scMu').onclick=e=>{ss(SMK,muted()?'0':'1');e.target.textContent=muted()?'\ud83d\udd07':'\ud83d\udd0a';SFX.tap()};
  CH.stop=fbStream(SUP.DB+'/'+SUP.ROOT+'/chat/'+rm+'.json'+Q,sync);
  tick();poll=setInterval(tick,4000);setTimeout(()=>I.focus(),300)}
